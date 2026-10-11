@@ -1,0 +1,59 @@
+{
+  "status": "c3_order_statistics_and_integer_m3_verified_offline",
+  "recorded_at_utc": "2026-10-11T03:57:22.028750+00:00",
+  "baseline_commit": "f4770df",
+  "source_sha256": "31e04ae99899085dd67a111b222f36007934fd4ba0fd3f8adcf18e134489a73a",
+  "incoming_archive_sha256": "83c9e895b3025062a347d61f66d492dc5568a35e54919c2e2494c38f3556e767",
+  "scope": "Applied the reviewed contributor patch, clarified treatment documentation, and ran all offline tests in the integrated checkout. No paid API requests or performance experiment.",
+  "registered_conditions": 103,
+  "offline_tests_run": 86,
+  "offline_tests_passed": 86,
+  "offline_tests_skipped": 0,
+  "offline_test_log": "docs/verification-tests-c3-m3.txt",
+  "paid_api_requests": 0,
+  "c3": {
+    "state_window": "t-9 through t, current values also provided separately",
+    "past_order_window": "t-9 through t-1",
+    "past_order_series": [
+      "Q_base",
+      "Q_final",
+      "Q_final_minus_Q_base"
+    ],
+    "statistics": [
+      "mean",
+      "sample_standard_deviation",
+      "minimum",
+      "maximum"
+    ],
+    "same_source_observations_as_c0": true,
+    "interpretation": "Summary and derived adjustment statistics, with past time order and individual values removed."
+  },
+  "m3": {
+    "fields": [
+      "plan_t_plus_1",
+      "plan_t_plus_2"
+    ],
+    "type": "integer",
+    "minimum": 0,
+    "maximum": 100,
+    "maximum_retries": 1,
+    "failure_fallback": null,
+    "plans_execute_automatically": false
+  },
+  "m2_changed": false,
+  "plan_versus_actual_error_aggregation_implemented": false,
+  "prior_verification_records_are_historical": true,
+  "limitations": [
+    "Remote Gemini/Flex acceptance of the revised M3 schema was not tested in this offline check.",
+    "Mock test outcomes are not LLM performance evidence."
+  ],
+  "resume_from_pre_c3_m3_results_supported": false,
+  "reviewed_runtime_and_test_files_preserved": [
+    "scm/harness.py",
+    "scm/prompts.py",
+    "scm/provider.py",
+    "tests/test_harness.py",
+    "tests/test_provider.py"
+  ],
+  "local_documentation_links_checked": 60
+}

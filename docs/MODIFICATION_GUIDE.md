@@ -1,20 +1,20 @@
 # 공동연구자를 위한 C3·M2·M3 수정 안내
 
-> **갱신:** C3 주문 통계(3.2의 주문 통계 추가 안)와 수치형 M3(5절)를 적용했습니다. 적용 내용은 [변경 기록](CHANGELOG_C3_M3.md)을 기준으로 하며, 아래 본문은 적용 전 대안 검토 기록으로 남겨 둡니다.
+> **현재 적용:** C3에는 과거 9기의 주문 통계가 포함되고, M3는 다음 두 기간의 자기 계획 발주량을 정수 두 개로 전달합니다. 변경 전후 내용은 [변경 기록](CHANGELOG_C3_M3.md)을 참고하세요. 아래 본문은 현재 코드를 기준으로 작성했습니다.
 
-이 문서는 **현재 구현을 설명하고, 설계를 변경할 때 함께 수정해야 하는 코드와 검증 항목을 안내**합니다. 아래의 대안과 JSON 예시는 제안이며, 현재 코드에 자동으로 적용되어 있지 않습니다. 전체 시스템과 실행 방법은 [README](../README.md)를 먼저 읽어 주세요.
+이 문서는 **현재 구현을 설명하고, 설계를 변경할 때 함께 수정해야 하는 코드와 검증 항목을 안내**합니다. M2의 이유 항목 선택형처럼 아직 구현하지 않은 대안은 따로 표시합니다. 전체 시스템과 실행 방법은 [README](../README.md)를 먼저 읽어 주세요.
 
 현재 등록은 C 4수준 × M 5수준 × T 5수준의 100조합에 독립 기준 A, D_cost, D_bullwhip을 더한 **103조건**입니다. A는 C0와 당기 수주량만으로 최종 발주를 결정하며 T0 조합과 다릅니다.
 
 ## 1. 무엇이 확정되어 있고 무엇을 논의 중인가
 
-| 항목 | 현재 동작 | 아직 채택하지 않은 대안 |
+| 항목 | 현재 동작 | 적용 상태 |
 |---|---|---|
-| C3 | 당기 D·I·B·P_pre를 별도로 제공하고, 당기 포함 최근 10기의 네 변수별 평균·표본 표준편차·최솟값·최댓값 제공. 과거 Q_base·Q_final 및 그 통계는 제외 | 현행 유지, C0와 주문 이력 제공 범위를 맞추기, 별도의 보조 비교조건 추가 |
-| M2 | 이미 확정한 당기 주문의 이유를 정성적 자유문장 하나로 전달. 숫자와 미래 행동 계획은 허용하지 않는 지시 | 자유문장 유지 또는 정해진 이유 항목을 LLM이 선택하는 구조로 변경 |
-| M3 | 다음 두 기간의 행동 계획을 `plan_t_plus_1`, `plan_t_plus_2` 두 문자열로 전달. 정성·정량 표현 모두 허용 | 다음 두 기간의 **자기 계획 발주량** 두 정수만 전달 |
+| C3 | 당기 D·I·B·P_pre + 당기 포함 10기 상태 통계 + 과거 9기 Q_base·Q_final·Q_final−Q_base 통계. 각 통계는 평균·표본 표준편차·최솟값·최댓값 | 적용 완료. 같은 원천 자료의 요약과 주문 차이의 파생 요약을 함께 제공 |
+| M2 | 이미 확정한 당기 주문의 이유를 정성적 자유문장 하나로 전달. 숫자와 미래 행동 계획은 허용하지 않는 지시 | 기존 방식 유지. 정해진 이유 항목을 LLM이 선택하는 대안은 미구현 |
+| M3 | `plan_t_plus_1`, `plan_t_plus_2`에 다음 두 기간의 **자기 계획 발주량**을 각각 0부터 수량 상한까지의 정수로 전달 | 적용 완료. 기본 상한 100, 잘못된 수량은 보정하지 않고 공통 재시도 후 실패 시 null 메시지 |
 
-M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분을 출력 형식과 검사로 어느 정도 강제할지입니다. 실제 미래 수요나 미래 상태를 제공하는 설계는 아닙니다.
+M2는 당기 판단의 이유이고 M3는 미래 발주 의도입니다. M3의 자료형·수량 범위는 검사하지만, 그 계획이 실제로 실행되거나 최적이라는 보장은 하지 않습니다. 실제 미래 수요나 미래 상태를 제공하는 설계는 아닙니다.
 
 ## 2. 수정 위치를 찾는 지도
 
@@ -23,7 +23,8 @@ M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분�
 | 파일 | 찾아볼 이름 | 담당 기능 |
 |---|---|---|
 | [scm/harness.py](../scm/harness.py) | `STATE_FIELDS`, `WINDOWS`, `build_C` | 자신의 현재 상태와 이력을 C 수준별로 가공 |
-| [scm/harness.py](../scm/harness.py) | `MESSAGE_SCHEMA`, `PLAN_SCHEMA`, `_validate_message` | 메시지 JSON 형식과 추가 내용 검사 |
+| [scm/harness.py](../scm/harness.py) | `ORDER_STAT_FIELDS`, `ORDER_STAT_DEFINITIONS`, `_summary`, `_order_statistics` | C3 주문 통계 항목·뜻·계산·null 처리 |
+| [scm/harness.py](../scm/harness.py) | `MESSAGE_SCHEMA`, `PLAN_FIELDS`, `plan_schema`, `_validate_message` | 메시지 JSON 형식과 추가 내용 검사 |
 | [scm/harness.py](../scm/harness.py) | `Harness.decide` | C 구성, T 처리, 최종 발주, 확정 후 메시지 생성 및 전달용 값 구성 |
 | [scm/prompts.py](../scm/prompts.py) | `message_instructions` | 송신자가 M2·M3·M4에 무엇을 쓸 수 있는지 지시 |
 | [scm/prompts.py](../scm/prompts.py) | `selection_instructions`, `order_instructions` | 수신자가 M을 도구 선택과 최종 판단에서 어떻게 해석할지 지시 |
@@ -34,7 +35,7 @@ M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분�
 | [scm/config.py](../scm/config.py) | `SimulationConfig`, `APIConfig` | 수량 상한, API 모델·단가·재시도·출력 토큰 제한 |
 | [configs/registered_conditions.json](../configs/registered_conditions.json) | 전체 파일 | 등록 조건의 공유용 목록. 실행 시 실제로 읽는 설정 파일은 아님 |
 
-예를 들어 M3의 문구만 바꾸려면 프롬프트를 수정할 수 있지만, **문자열을 정수로 바꾸는 작업은 프롬프트 한 곳의 변경으로 끝나지 않습니다.** 아래의 스키마, 검사, 모의 응답, 수신 측 해석, 테스트를 함께 검토해야 합니다.
+M3는 이미 정수형입니다. 이후 필드·기간·허용 범위를 변경할 때도 **프롬프트 한 곳만 바꾸면 안 됩니다.** 스키마, 검사, 모의 응답, 수신 측 해석, 테스트를 함께 검토해야 합니다.
 
 ## 3. C3를 바꾸는 방법과 비교의 의미
 
@@ -43,20 +44,23 @@ M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분�
 `build_C`는 당기 상태를 `current`에 항상 넣습니다. 여기의 `P_pre`는 입고량을 차감한 뒤, 자기 당기 발주를 더하기 **전**의 미입고 주문량입니다.
 
 - C0: D·I·B·P_pre의 `t-9`부터 `t`까지 원자료와 `t-9`부터 `t-1`까지 과거 기준·최종 주문량 9개.
-- C3: 당기 상태와 D·I·B·P_pre의 `t-9`부터 `t`까지 통계. 기간별 원자료와 과거 주문 이력 모두 없음.
+- C3: 당기 상태와 D·I·B·P_pre의 `t-9`부터 `t`까지 통계. 여기에 `t-9`부터 `t-1`까지 Q_base·Q_final 및 같은 기간의 차이 `Q_final−Q_base` 통계를 추가합니다. 과거 기간별 원자료 행은 제공하지 않습니다.
 
-따라서 현재 C0와 C3의 비교에는 **상태 표현을 요약한 효과와 주문 이력을 제거한 효과**가 함께 포함됩니다. 이것이 잘못된 실험이라는 뜻은 아닙니다. 다만 결과를 “원자료 대 통계 표현만의 효과”로 해석할 수는 없습니다. 통계 요약에서 시간적 순서와 개별 관측값이 사라지는 것은 요약 표현 자체의 특성입니다.
+따라서 과거 주문 자료를 아예 제외하던 이전 C3와 달리, **현재 C3는 C0와 같은 원천 변수·기간을 사용하면서 통계 요약과 주문 차이의 파생 요약을 제공**합니다. `Q_final−Q_base`는 C0의 원자료에서도 계산할 수 있지만, C3는 그 계산 결과까지 환경이 요약해 줍니다. 통계에서는 시간적 순서와 개별 관측값도 사라집니다. 따라서 “정보가 완전히 같고 표시 형식만 바뀐다”거나 “순수한 표현 형식의 효과만 측정한다”고 설명하지 않습니다.
 
-### 3.2 가능한 선택
+### 3.2 현재 통계 필드와 수정 위치
 
-| 선택 | 어떻게 바꾸는가 | 해석 |
+| 필드 | 현재 내용 | 수정할 위치 |
 |---|---|---|
-| 현행 유지 | 코드 변경 없음 | C0 정보 묶음과 더 압축된 C3 정보 묶음의 실용적 차이 |
-| C3에 과거 주문 원자료 유지 | C3의 상태는 통계로 주고, C0와 동일한 `past_orders` 9개를 추가 | 주문 이력 제공 범위를 맞추고 상태 원자료 대 요약 표현 비교. 주문 통계를 새로 만들 필요 없음 |
-| **별도 보조조건 추가** | C0와 같은 상태 원자료를 주되 `past_orders`만 제외한 조건을 추가 | C0와 보조조건으로 주문 이력 효과, 보조조건과 현행 C3로 상태 표현 효과 비교 |
-| 추가 요인 실험 | 상태 표현(원자료/통계) × 주문 이력(있음/없음)을 별도로 구성 | 두 효과와 상호작용까지 분리. 조건 수와 분석 계획을 추가로 정해야 함 |
+| `current` | 당기 `t`, `D`, `I`, `B`, `P_pre` | `build_C`의 공통 현재 값 구성 |
+| `statistics` | 10기 D·I·B·P_pre 통계 | `build_C`의 C3 분기와 `_summary` |
+| `order_statistics` | 과거 9기 Q_base·Q_final·Q_final−Q_base 통계 | `ORDER_STAT_FIELDS`, `_order_statistics` |
+| `order_definitions` | 각 주문 통계가 뜻하는 바를 LLM에 전달 | `ORDER_STAT_DEFINITIONS` |
+| `order_window`, `order_period_start`, `order_period_end` | 주문 자료 개수 9, 시작 `t-9`, 끝 `t-1` | `build_C`의 C3 분기 |
 
-현재 C3의 주문 이력 제외 의도를 유지한다면, **보조조건을 일부 동일한 M·T에서 비교하는 안**을 권합니다. 새 보조조건을 기존 C0 이름으로 덮어쓰면 A·D에도 영향이 갈 수 있으므로, 별도 이름과 분기로 구분해야 합니다. 이 안은 현재 103조건에 포함되지 않습니다.
+`_summary`는 각 계열의 `mean`, `standard_deviation`, `minimum`, `maximum`을 반환합니다. 차이는 같은 기간의 **실제 실행량 Q_final에서 보정된 기준량 Q_base를 뺀 부호 있는 값**입니다. 절댓값이나 보정 전 `_raw` 값이 아닙니다. 준비기간은 Q_base와 Q_final이 같으므로 해당 기간의 차이 0도 포함합니다.
+
+과거 Q_base 중 하나라도 `null`이면 Q_base 통계와 차이 통계 전체가 `null`이고 Q_final 통계만 계산합니다. `null`을 0으로 바꾸거나 일부 기간만 골라 계산하지 않습니다. 현재 등록된 C3 조건에는 기준량이 존재하므로 이 처리는 정의 확장 시에도 의미를 유지하기 위한 방어 규칙입니다.
 
 ### 3.3 코드에서 주의할 점
 
@@ -65,7 +69,8 @@ M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분�
 3. C3에는 `window`, `period_start`, `period_end`에 10기 정의가 직접 들어 있습니다. 기간을 바꾸면 `WINDOWS` 한 곳만 바꿔서는 부족합니다.
 4. C의 변경은 최종 주문 호출뿐 아니라 **T3/T4의 방법 선택 호출과 M2/M3/M4 생성 호출의 C 입력**에도 반영됩니다. 특정 단계에서만 다른 C를 보여주려면 그것도 별도의 실험 설계입니다.
 5. T의 수주 이력은 C와 별개인 고정 30기입니다. C3를 수정한다고 `history_30`을 C에 넣거나 예측 창을 바꾸지 않습니다.
-6. 과거 주문 이력을 추가한다면 당기 미확정 Q를 포함하지 않습니다. `t-1`까지만 제공하고 `Q_base=null`은 0으로 바꾸지 않습니다. 독립 A에서는 본 실험 기간의 기준 주문량이 존재하지 않습니다.
+6. 주문 통계에는 당기 미확정 Q를 포함하지 않습니다. `t-1`까지만 제공하고 `Q_base=null`은 0으로 바꾸지 않습니다. 독립 A는 C0를 쓰며 본 실험 기간의 기준 주문량이 존재하지 않습니다.
+7. 주문 통계 항목을 변경할 때 `ORDER_STAT_FIELDS`, `ORDER_STAT_DEFINITIONS`, `_order_statistics`의 계산을 함께 맞춥니다. 평균·표준편차 등 공통 통계 종류를 바꾸면 `_summary`를 사용하는 상태 통계와 주문 통계가 모두 바뀝니다.
 
 ## 4. M2를 바꾸는 방법
 
@@ -102,20 +107,11 @@ M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분�
 
 이 대안에서는 자연어 설명의 풍부함이 줄고 전송 길이도 바뀝니다. 따라서 기존 자유문장 M2와 동일한 처리로 간주하지 않고 변경된 처리를 기록합니다. 이유 코드가 허용된 코드라는 사실과 그 이유가 실제 상태에 부합한다는 사실도 별개입니다.
 
-## 5. M3를 수치형 계획으로 바꾸는 방법
+## 5. 현재 수치형 M3와 수정 방법
 
-### 5.1 현재 구현과 제안의 구분
+### 5.1 현재 출력과 의미
 
-현재는 다음처럼 두 **문자열**을 받습니다.
-
-```json
-{
-  "plan_t_plus_1": "Maintain replenishment if demand stays stable.",
-  "plan_t_plus_2": "Reassess replenishment using observed demand."
-}
-```
-
-제안한 수치형 M3는 다음처럼 두 **정수**만 받는 방식입니다. 키 이름은 유지한 예시입니다.
+현재 M3는 다음처럼 두 **정수**만 받습니다. 문자열 계획은 이전 버전의 정의입니다.
 
 ```json
 {"plan_t_plus_1": 8, "plan_t_plus_2": 10}
@@ -125,20 +121,20 @@ M2·M3는 현재도 구분되어 있습니다. 논의 중인 것은 이 구분�
 
 LLM은 이미 확정한 당기 주문 뒤에 허용된 C·수신 M·당기 Q_base·Q_final·판단 이유·발주 후 P_post를 보고 계획량을 자율적으로 정합니다. 별도의 계획 계산 공식, 추가 30기 이력, 실제 미래 수요를 제공하지 않습니다. 환경은 형식과 수량 범위를 검사하며 계획의 최적성을 보장하지 않습니다.
 
-### 5.2 함께 수정해야 하는 부분
+### 5.2 현재 구현 위치와 변경 시 확인할 부분
 
-| 순서 | 수정 지점 | 필요한 변경 |
+| 순서 | 수정 지점 | 현재 동작과 확인할 내용 |
 |---|---|---|
-| 1 | `PLAN_SCHEMA` | 두 필드를 `string`에서 `integer`로 변경. 필수 두 필드와 추가 필드 금지 유지 |
-| 2 | `_validate_message` | M3의 정수·비음수·상한 검사를 별도 분기로 구현. 정수에는 `.strip()`를 호출할 수 없음 |
-| 3 | 수량 상한 전달 | 현재 `_validate_message(value, level)`와 `message_instructions(role, level)`에는 config 인자가 없음. 필요하면 함수 인자와 `Harness.decide` 호출부에 `self.config.order_cap`을 함께 전달 |
-| 4 | `message_instructions` | 두 값은 자기 미래 발주 계획이며 정수 범위 안에서 자율 판단하고 현재 상태·이유 설명은 넣지 않도록 명시 |
-| 5 | 수신 프롬프트 | `selection_instructions`, `order_instructions`에서 두 수치의 기간·송신자·비구속적 의도를 설명. 보장된 수요로 해석하거나 당기 주문에 더하지 않도록 명시 |
-| 6 | `MockProvider.ask` | 현재의 M3 문자열 두 개를 새 규칙에 맞는 정수 두 개로 변경 |
-| 7 | 전달 및 기록 | `outgoing=deepcopy(output)` 경로가 두 정수를 그대로 보존하는지, 상류의 M·로그·체크포인트에서 문자열로 변환되지 않는지 확인 |
-| 8 | 테스트·문서 | 경계값·오류·재시도·수신 검증을 추가하고 처리 정의 및 출력 예시 갱신 |
+| 1 | `PLAN_FIELDS`, `plan_schema(order_cap)` | 정수 필드 두 개를 필수로 지정하고 추가 필드를 금지. 최소 0, 최대 설정 상한을 스키마에 포함 |
+| 2 | `_validate_message(value, level, order_cap=None)` | M3 분기에서 `type(quantity) is int`와 실제 수량 범위를 검사. M3 검사에는 상한 전달이 필수 |
+| 3 | `Harness.decide` | `self.config.order_cap`을 `plan_schema`, `message_instructions`, 추가 검증 함수에 함께 전달 |
+| 4 | `message_instructions(role, level, order_cap)` | 두 값은 자기 미래 발주 계획이고 문장·이유·현재 상태 보고를 넣지 않도록 지시 |
+| 5 | 수신 프롬프트 | `selection_instructions`, `order_instructions`가 두 수치의 기간·송신자·비구속적 의도를 설명. 보장된 수요로 해석하거나 당기 주문에 더하지 않도록 명시 |
+| 6 | `MockProvider.ask` | 흐름 확인용으로 당기 Q_final을 두 계획량에 복사. 실제 LLM도 이 규칙을 쓰도록 강제하는 것은 아님 |
+| 7 | 전달 및 기록 | `outgoing=deepcopy(output)`가 객체를 보존. 상류의 M·결과 행·체크포인트에도 두 정수를 전달·저장 |
+| 8 | 테스트·문서 | 형식·범위·기간 정의를 변경하면 해당 검증과 처리 정의·출력 예시를 함께 갱신 |
 
-수치형 스키마의 개념 예시는 아래와 같습니다. **현재 파일을 그대로 교체할 수 있는 완성 패치는 아니며**, 상한을 config에서 연결하고 실제 검증을 추가해야 합니다. 여기서 100은 현재 기본 상한입니다.
+현재 `plan_schema(100)`이 만드는 스키마는 아래와 같습니다. 실제 호출에는 고정 숫자 대신 `self.config.order_cap`을 전달합니다.
 
 ```json
 {
@@ -152,9 +148,9 @@ LLM은 이미 확정한 당기 주문 뒤에 허용된 C·수신 M·당기 Q_bas
 }
 ```
 
-**현재 로컬 `validate_schema`는 `minimum`·`maximum`을 검사하지 않습니다.** 스키마만 위처럼 바꾸면 음수나 초과값의 로컬 차단이 보장되지 않습니다. 검증기를 확장하고 테스트하거나, M3 전용 추가 검증에서 범위를 검사해야 합니다. 현재 `integer` 검사는 JSON `true`·`false`를 정수로 받지 않습니다.
+**로컬 `validate_schema`는 `minimum`·`maximum`을 검사하지 않으므로 현재 `_validate_message`의 M3 분기가 범위를 직접 검사합니다.** 스키마만 고치고 이 검사를 제거하면 음수나 상한 초과를 차단하지 못합니다. 정수 검사에는 JSON `true`·`false`, 문자열 `"10"`, 소수 `10.5`와 `10.0` 모두 통과하지 못합니다. 0과 상한 자체는 허용합니다.
 
-계획량을 처음부터 정수로 제한한다면 잘못된 소수·음수·초과값은 조용히 보정하기보다, **형식 실패로 기록하고 공통 재시도로 수정하게 하는 안**이 구분이 명확합니다. 실제 발주량에 적용하는 `normalize_order`를 계획량에도 적용하려면 별도의 처리 선택으로 기록하고 보정 전·후 계획을 남겨야 합니다. 둘 중 어떤 정책을 쓸지도 수치형 M3 도입 시 확정합니다.
+현재 계획량에는 `normalize_order`를 적용하지 않습니다. 잘못된 수량·형식은 **형식 실패로 기록하고 공통 재시도 1회**를 사용합니다. 재시도 후에도 실패하면 `outgoing_message=null`로 전달하며 이미 확정한 Q_final과 P_post는 유지합니다. 추후 계획량을 자동 반올림·상한 보정하도록 바꾸면 이는 별도의 처리 변경입니다.
 
 ### 5.3 계획을 전달하는 것과 실행하는 것은 다릅니다
 
@@ -187,19 +183,25 @@ python -m unittest discover -s tests -v
 
 기존 테스트를 실제 새 정의에 맞게 수정하고, 새 경계·오류 사례를 추가합니다. 통과시키기 위해 정보 경계 확인을 삭제하지 않습니다.
 
-| 테스트 파일 | 기존 확인 지점 | 변경 시 필요한 확인 |
+| 테스트 파일 | 현재 테스트 이름 | 변경 시 유지할 확인 |
 |---|---|---|
-| [tests/test_harness.py](../tests/test_harness.py) | `test_summary_excludes_all_order_history_and_uses_current` | 채택한 C3의 현재 값·통계 기간·표본 SD·Q 포함 여부. 현행 C3를 유지하면 주문 제외 검사를 유지 |
+| [tests/test_harness.py](../tests/test_harness.py) | `test_summary_gives_order_statistics_without_raw_rows` | C3 상태 10기·주문 9기, 표본 SD, 현재 값, 원자료 행 제외 및 준비기간 차이 0 |
+| [tests/test_harness.py](../tests/test_harness.py) | `test_summary_order_statistics_use_executed_signed_gaps` | 실제 실행량과 기준량의 부호 있는 차이, Q_base가 없는 경우의 null 처리 |
+| [tests/test_harness.py](../tests/test_harness.py) | `test_raw_context_levels_are_unchanged_by_c3_order_statistics` | C3 주문 통계 변경이 C0·C1·C2에 추가 정보를 섞지 않음 |
 | [tests/test_harness.py](../tests/test_harness.py) | `test_context_windows_and_pre_order_timestamps` | 원자료 창과 P_pre의 측정 시점, 과거 주문은 t-1까지만 포함 |
 | [tests/test_harness.py](../tests/test_harness.py) | `test_generated_messages_use_only_permitted_information_after_order` | 새 출력 형식, 허용된 입력만 사용, 발주 후 P_post, 당기 주문 확정 후 생성 |
 | [tests/test_harness.py](../tests/test_harness.py) | `test_m2_semantic_checks_are_narrow` | 현행 문장 검사의 범위 또는 새 코드 목록·개수·중복 검사 |
 | [tests/test_harness.py](../tests/test_harness.py) | `test_message_failure_preserves_committed_order` | M2/M3에도 잘못된 출력과 재시도 소진 사례 추가. 당기 발주 유지 확인 |
+| [tests/test_harness.py](../tests/test_harness.py) | `test_m3_accepts_only_integer_plans_within_order_cap` | 정수 경계값 허용, 잘못된 자료형·범위·누락·추가 필드 거절 |
+| [tests/test_harness.py](../tests/test_harness.py) | `test_m3_numeric_plan_reaches_upstream_selection_and_order` | 송신 계획이 상류 선택·최종 주문 호출에 같은 값으로 전달됨 |
+| [tests/test_harness.py](../tests/test_harness.py) | `test_m3_invalid_plan_exhausts_to_empty_message_but_keeps_order` | 메시지 실패 시 null 대체 및 확정한 당기 발주 유지 |
 | [tests/test_harness.py](../tests/test_harness.py) | `test_factory_does_not_generate_a_message_to_nonexistent_agent` | 마지막 공장에는 메시지 생성 호출이 없고, 소매상부터 같은 기간에 전달되는지 확인 |
 | [tests/test_provider.py](../tests/test_provider.py) | `test_semantic_failure_shares_retry_budget`, `test_schema_retry_accounted_and_journal_reused` | 새 형식 오류도 재시도 1회와 형식 실패 집계에 포함되는지 확인 |
+| [tests/test_provider.py](../tests/test_provider.py) | `test_m3_out_of_range_plan_shares_retry_budget_then_succeeds` | 범위 오류가 실제 Provider 검증 경로에서 공통 재시도를 사용하고 수정 응답을 수용 |
 | [tests/test_integration.py](../tests/test_integration.py) | `test_all_103_registered_conditions_complete_sequentially` | 현재 등록 조건 모두 모의 실행. 조건을 추가하면 개수·구성 기대값도 변경 |
 | [tests/test_integration.py](../tests/test_integration.py) | `test_explicit_batch_resume_and_warmup_pairing` | 동일 설정 재개, 동일 seed 준비기간 복제, 다른 실행 서명 거부 |
 
-수치형 M3를 채택한다면 최소한 0·상한·음수·상한 초과·소수·문자열·불리언·필드 누락·추가 필드를 점검합니다. 또한 송신자의 계획이 수신자의 **선택 호출(T3/T4)과 주문 호출**에 실제로 같은 값으로 전달되는지 확인하는 사례가 필요합니다.
+M3를 다시 수정할 때도 0·상한·음수·상한 초과·소수·문자열·불리언·필드 누락·추가 필드와 **선택 호출(T3/T4)·주문 호출에 대한 전달**을 점검합니다. 현재 상류 전달 테스트는 T3 사례를 사용하며 T4에도 같은 M 입력 경로가 적용됩니다.
 
 모의 실행 예시는 다음과 같습니다. 출력 폴더는 새로 지정합니다.
 
@@ -247,6 +249,6 @@ python -c "import json; from pathlib import Path; from dataclasses import asdict
 
 ### 과거 예비실험과 새 설계 분석
 
-과거 예비실험의 A는 예측과 OUT이 포함된 조건이었습니다. 현재 독립 A는 예측·기준 주문량 없이 최종 주문을 판단합니다. 또한 새 C3/M2/M3 정의를 채택하면 그 처리도 이전과 달라집니다.
+과거 예비실험의 A는 예측과 Order-up-to 정책이 포함된 조건이었습니다. 현재 독립 A는 예측·기준 주문량 없이 최종 주문을 판단합니다. 이번 C3 주문 통계와 M3 정수형 계획은 이전 C3·M3와 다른 처리이며, M2는 기존 정의를 유지합니다. 공통 선택·최종 주문 프롬프트의 M3 설명도 변경되므로 M3 이외 조건에도 프롬프트 변경이 적용됩니다.
 
 현재 `python -m scm analyze`는 **고정된 과거 4조건 × 8개 seed 예비실험 전용**이며 당시 소스와 계획을 검사합니다. 새 103조건이나 새 C3/M2/M3 결과를 위한 일반 요인실험 분석기가 아닙니다. 새로운 결과에는 별도의 분석 계획과 분석 코드를 마련해야 하며, 기존 검사에서 요구하는 소스 해시를 변경해서 새 결과를 통과시키지 않습니다.
