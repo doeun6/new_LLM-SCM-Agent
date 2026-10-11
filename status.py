@@ -1,7 +1,9 @@
 """Read completed episode summaries only: python status.py results/pilot.
 
-No active progress, checkpoint, or API ledger is opened. Completion and cost
+No active progress, checkpoint, or API ledger is opened. Completion and API cost
 figures exclude unfinished episodes and are not live whole-batch totals.
+Supply-chain costs remain separate for each condition/seed; they are copied from
+saved metrics, not summed across experiments or combined with API costs in USD.
 """
 import json
 from pathlib import Path
@@ -33,8 +35,10 @@ def completed_status(root):
         "completed_episodes_missing_cost_reports": sum(cost is None for cost in costs),
         "unfinished_episode_progress_included": False,
         "unfinished_episode_spend_included": False,
-        "note": "Unfinished episodes are excluded. These figures are neither live decision progress nor total spend so far.",
-        "completed": [{key: summary[key] for key in ("condition", "seed")}
+        "note": "Unfinished episodes are excluded. USD totals cover completed-episode API costs only, not live total spend. Supply-chain costs are shown separately for each condition/seed, without summing across experiments or adding API costs.",
+        "completed": [{**{key: summary[key] for key in ("condition", "seed")},
+                       **{key: summary["metrics"].get(key)
+                          for key in ("total_cost", "cost_per_period", "periods_evaluated")}}
                       for summary in completed],
     }
 

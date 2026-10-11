@@ -307,11 +307,15 @@ A와 일반 CMT는 실행자가 `--objective cost` 또는 `--objective bullwhip`
 
 ```text
 cost[i,t] = I[i,t] + B[i,t] + Q_final[i,t] + indicator(Q_final[i,t] > 0)
-total_cost = 평가 100기 × 네 단계의 cost 합계
-cost_per_period = total_cost / 100
+total_cost = sum(cost[i,t] for t in 평가기간 for i in 네 단계)
+cost_per_period = total_cost / periods_evaluated
 ```
 
-`cost_per_period`는 **한 기간당 공급망 전체 비용**입니다. 단계 수 4로 한 번 더 나누지 않습니다. API 사용료는 이 운영비용에 포함하지 않고 별도 기록합니다. 추가적인 종료 재고 처분비나 종료 백로그 일괄 청산비는 없습니다. 종료 상태는 별도로 기록되므로 비용 해석 시 서비스 수준·백로그·종료 상태도 함께 확인해야 합니다.
+**전체 공급망 누적 비용 `total_cost`와 주 지표 `cost_per_period`를 함께 보고합니다.** 기본 설정에서 `periods_evaluated=100`이며, 실제 31기부터 130기까지 네 단계의 비용을 합산합니다. 준비기간 30기의 비용은 제외합니다. `cost_per_period`는 **한 기간당 공급망 전체 비용**으로, 단계 수 4로 한 번 더 나누지 않습니다. 예를 들어 누적 비용 12,000이면 기간당 비용은 120입니다. 동일한 평가기간에서는 두 지표의 순위가 같으며, 별개의 성능 개선 증거로 세지 않습니다.
+
+두 값은 각 실행의 `summary.json` 안 `metrics.total_cost`와 `metrics.cost_per_period`에 저장되며 배치 `results.json`에도 포함됩니다. `status.py`는 완료된 조건·seed별로 두 값과 평가기간 수를 표시합니다. 여러 조건·seed의 운영비용을 합쳐 하나의 성과지표로 만들지는 않습니다. 반면 `periods.json/csv`의 각 행에 있는 `total_cost`는 **해당 에이전트·해당 기간의 비용**이므로 요약 파일의 공급망 전체 합계와 구분합니다.
+
+API 사용료는 이 운영비용에 포함하지 않고 별도 기록합니다. 추가적인 종료 재고 처분비나 종료 백로그 일괄 청산비는 없습니다. 종료 상태는 별도로 기록되므로 비용 해석 시 서비스 수준·백로그·종료 상태도 함께 확인해야 합니다.
 
 ### 서비스와 채찍효과
 

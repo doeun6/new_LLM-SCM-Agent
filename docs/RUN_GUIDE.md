@@ -129,7 +129,7 @@ $scmMainConditions = @($scmConditions | Where-Object { $_ -ne 'D_cost' -and $_ -
 python status.py results/cost_comparison
 ```
 
-이 명령은 완료된 실행의 결과만 읽습니다. 실행 중인 에피소드의 실시간 진행률과 지출을 포함하지 않으며, 전체 완료 여부는 `batch_status.json`을 함께 확인합니다.
+이 명령은 완료된 실행의 결과만 읽습니다. `completed` 목록에서 조건·seed별 전체 공급망 누적 비용 `total_cost`, 기간당 평균 비용 `cost_per_period`, 평가기간 수 `periods_evaluated`를 확인합니다. 이전 요약 파일에 해당 값이 없으면 0으로 대신 표시하지 않고 `null`로 표시합니다. API 비용 합계는 별도의 `completed_episodes_reported_cost_usd`입니다. 실행 중인 에피소드의 실시간 진행률과 지출을 포함하지 않으며, 전체 완료 여부는 `batch_status.json`을 함께 확인합니다.
 
 ```text
 results/<배치>/
@@ -146,7 +146,9 @@ results/<배치>/
     failure.json           중단이 발생한 경우의 이력
 ```
 
-주 지표 `cost_per_period`는 4단계 운영비용 합을 평가기간 수로 나눈 값입니다. API 달러 비용과는 다릅니다. 충족률·채찍효과·토큰·지연·실패 지표의 정의는 [시스템 설명](SYSTEM_GUIDE.md)을 참고하세요. 보정 전후 수량은 [README의 raw 용어](../README.md#결과-파일의-raw와-수량-용어)를 함께 확인합니다.
+**전체 공급망 누적 비용 `total_cost`를 주 지표 `cost_per_period`와 함께 확인합니다.** `total_cost`는 한 조건·seed에서 평가기간 동안 네 단계의 재고 유지비·백로그 비용·수량 비례 발주비·고정 발주비를 모두 합한 값입니다. 기본 평가기간은 31기부터 130기까지 100기이며 준비기간 비용은 제외합니다. `cost_per_period = total_cost / periods_evaluated`이므로, 기본 설정에서 누적 비용 12,000은 기간당 비용 120에 해당합니다. 두 지표는 각 `summary.json`의 `metrics` 안에 있고 배치 `results.json`에도 저장됩니다. 평가기간이 동일하면 두 지표의 순위도 같습니다.
+
+공급망 운영비용과 API 달러 비용은 따로 해석합니다. 충족률·채찍효과·토큰·지연·실패 지표의 정의는 [시스템 설명](SYSTEM_GUIDE.md)을 참고하세요. 보정 전후 수량은 [README의 raw 용어](../README.md#결과-파일의-raw와-수량-용어)를 함께 확인합니다.
 
 `summary.json`이 없거나 `complete`가 참이 아닌 실행은 완주 성능으로 취급하지 않습니다. 재개 후 완료됐더라도 이전 중단 기록인 `failure.json`은 남아 있을 수 있습니다.
 
