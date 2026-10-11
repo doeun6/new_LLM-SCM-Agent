@@ -1,0 +1,39 @@
+{
+  "protocol_id": "scm_harness_pilot_20261011",
+  "created_at_utc": "2026-10-10T18:37:38Z",
+  "status": "registered_before_pilot_outcomes",
+  "conditions": ["A", "C0M0T2", "C3M1T2", "C3M1T4"],
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8],
+  "replicates_per_seed_condition": 1,
+  "warmup_periods": 30,
+  "evaluation_periods": 100,
+  "evaluation_window_inclusive": [31, 130],
+  "paired_unit": "external_demand_seed",
+  "shared_warmup_snapshot_per_seed": true,
+  "primary_metric": "cost_per_period",
+  "primary_contrasts": [
+    {"condition": "C0M0T2", "reference": "A", "direction": "condition_minus_reference"},
+    {"condition": "C3M1T2", "reference": "A", "direction": "condition_minus_reference"},
+    {"condition": "C3M1T4", "reference": "A", "direction": "condition_minus_reference"}
+  ],
+  "primary_test": "two_sided_exact_paired_sign_flip_randomization_of_mean_difference",
+  "enumerate_all_sign_patterns": true,
+  "sign_patterns_for_eight_pairs": 256,
+  "alpha": 0.05,
+  "multiplicity": "Holm correction across the three primary cost contrasts",
+  "interval": {
+    "method": "paired_seed_percentile_bootstrap",
+    "confidence": 0.95,
+    "resamples": 10000,
+    "random_seed": 20261011,
+    "interpretation": "descriptive; eight seed pairs do not establish precise interval coverage"
+  },
+  "secondary_metrics_descriptive_only": ["retailer_immediate_fill_rate", "global_bullwhip", "order_cv_i", "input_tokens", "output_tokens", "total_tokens", "reported_cost_usd", "decision_latency_ms", "retry_count", "format_failure_count", "fallback_count"],
+  "included_outcomes": "All completed executions, including retries and fallbacks; no outcome-based exclusion",
+  "incomplete_policy": "Report missing or interrupted executions; do not run confirmatory contrasts until all 32 planned executions are complete",
+  "stopping_rule": "Exactly eight predetermined seeds; do not extend, replace seeds, tune, or stop because significance was or was not obtained",
+  "budget_usd_hard_cap": 8.0,
+  "budget_stop_policy": "A budget stop yields an explicitly incomplete pilot; it does not change the registered sample or permit selective inference",
+  "interpretation": "Exploratory pilot, not a full factorial experiment. It cannot identify all C, M, T or interaction effects. Sign-flip inference assumes paired differences are sign-exchangeable under the null.",
+  "reporting": "Report all conditions, all three planned contrasts, effect sizes, intervals, raw and adjusted p-values, and null or unfavorable outcomes"
+}

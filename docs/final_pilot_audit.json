@@ -1,0 +1,135 @@
+{
+  "audit_status": "passed",
+  "independent_implementation": true,
+  "episodes_checked": 32,
+  "agent_period_rows_checked": 12800,
+  "source_hash": "e6c3297ea3398bd84552313f2fa5c3fd69d43fe8e0064d1bcba6037c8eb59525",
+  "paired_seed_provenance_checked": 8,
+  "current_delivered_source_hash": "e6c3297ea3398bd84552313f2fa5c3fd69d43fe8e0064d1bcba6037c8eb59525",
+  "current_source_matches_execution": true,
+  "current_source_files_changed_since_execution": [],
+  "frozen_plan_sha256": "42ee96018394438d24706e6ef4304ade8c92fb156567a88c18954de48c52abe2",
+  "checks": [
+    "complete registered grid",
+    "four cost components and period denominator",
+    "immediate fill excludes prior backlog",
+    "sample CV and four-stage product",
+    "source and common warmup/demand integrity",
+    "physical API-attempt ledger and nullable usage",
+    "independent exact paired p-values and Holm correction"
+  ],
+  "ledger_totals": {
+    "api_calls": 19200,
+    "retries": 0,
+    "format_failures": 0,
+    "fallbacks": 0
+  },
+  "known_usage_totals": {
+    "input_tokens": 12168638,
+    "output_tokens": 744421,
+    "total_tokens": 12913059,
+    "reasoning_tokens": 0,
+    "reported_cost_usd": 0.7572768599999999
+  },
+  "missing_usage_calls": {
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0,
+    "reasoning_tokens": 0,
+    "reported_cost_usd": 0
+  },
+  "resume_checks": {
+    "expected_logical_calls": 19200,
+    "duplicate_generation_detected": false,
+    "unique_provider_response_ids": 19200,
+    "replayed_decisions": 1,
+    "missing_decision_latencies": 1,
+    "latency_observed_decisions": 12799,
+    "historical_failure_files": [
+      {
+        "condition": "A",
+        "seed": 4,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:11.314663+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "C3M1T4",
+        "seed": 4,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:11.078197+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "A",
+        "seed": 5,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:10.353262+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "C3M1T2",
+        "seed": 5,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:10.559611+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "C3M1T4",
+        "seed": 5,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:10.213504+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "A",
+        "seed": 6,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:10.285008+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "C0M0T2",
+        "seed": 6,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:10.496093+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "C3M1T2",
+        "seed": 6,
+        "failure_type": "PermissionError",
+        "at": "2026-10-10T19:09:10.143501+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      },
+      {
+        "condition": "C3M1T4",
+        "seed": 6,
+        "failure_type": "FatalAPIError",
+        "at": "2026-10-10T19:09:10.147501+00:00",
+        "classification": "historical_interruption_superseded_by_verified_complete_summary"
+      }
+    ],
+    "budget_accounted_usd": 0.7572768599999941
+  },
+  "primary_contrast_checks": [
+    {
+      "condition": "C0M0T2",
+      "mean_difference": 80.53125,
+      "p_value": 0.265625,
+      "p_value_holm": 0.265625
+    },
+    {
+      "condition": "C3M1T2",
+      "mean_difference": -35.00999999999999,
+      "p_value": 0.0859375,
+      "p_value_holm": 0.171875
+    },
+    {
+      "condition": "C3M1T4",
+      "mean_difference": -39.22624999999999,
+      "p_value": 0.0390625,
+      "p_value_holm": 0.1171875
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+results/
+# Local design sources and Word extraction are kept locally, outside the shared repository.
+docs/source_word_extracted.txt
+docs/agreed_specification.json
+# Local credentials and common editor/OS files.
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,207 @@
+{
+  "status": "direct_A_and_103_conditions_verified_offline_only",
+  "recorded_at_utc": "2026-10-10T23:46:08.926069+00:00",
+  "source_sha256": "2fd78b00f2aefdb9f22954904ab891c2fa22e510f9dfc0845d91286a51450c56",
+  "simulation_config": {
+    "warmup_periods": 30,
+    "evaluation_periods": 100,
+    "lead_time": 2,
+    "demand_mean": 10.0,
+    "demand_std": 3.0,
+    "initial_inventory": 0,
+    "initial_backlog": 0,
+    "initial_arrival": 10,
+    "synthetic_demand": 10,
+    "safety_stock": 0.0,
+    "order_cap": 100,
+    "holding_cost": 1.0,
+    "backlog_cost": 1.0,
+    "variable_order_cost": 1.0,
+    "fixed_order_cost": 1.0,
+    "forecast_window": 30,
+    "ses_alpha": 0.3,
+    "std_ddof": 1
+  },
+  "api_config": {
+    "model": "google/gemini-2.5-flash-lite",
+    "endpoint": "https://openrouter.ai/api/v1/responses",
+    "provider": "google-ai-studio/flex",
+    "service_tier": "flex",
+    "temperature": 0.1,
+    "timeout_seconds": 60.0,
+    "max_retries": 1,
+    "retry_backoff_seconds": 1.0,
+    "max_output_tokens": 300,
+    "input_usd_per_million": 0.05,
+    "output_usd_per_million": 0.2
+  },
+  "registered_condition_count": 103,
+  "factorial_condition_count": 100,
+  "additional_conditions": [
+    "A",
+    "D_cost",
+    "D_bullwhip"
+  ],
+  "A": {
+    "direct_order": true,
+    "decision_inputs": [
+      "C0",
+      "current_D"
+    ],
+    "forecast": null,
+    "Q_base": null,
+    "order_up_to": false,
+    "exhausted_order_failure_policy": "normalized_current_D",
+    "common_rule_based_warmup_preserved": true
+  },
+  "offline_tests_passed": 79,
+  "offline_test_log": "docs/verification-tests-direct-a.txt",
+  "all_103_conditions_checked_with_mock": true,
+  "mock_evaluation_periods_per_condition": 2,
+  "powershell_dry_runs_verified": [
+    "A/C0M0T0 cost",
+    "A/C0M0T0 bullwhip",
+    "D_cost/D_bullwhip fixed objectives"
+  ],
+  "new_paid_api_requests": 0,
+  "current_source_real_api_validated": false,
+  "legacy_pilot_notice": "Historical A used a T0 forecast and OUT. Those 32 runs are not evidence for the corrected direct-order A. Historical raw results, plan and source snapshot remain unchanged.",
+  "legacy_analysis_guard": "Actual API inputs require the original pilot source SHA and explicit cost objective.",
+  "unchanged_pending_design_choices": [
+    "C3 excludes historical Q_base and Q_final",
+    "M2 qualitative free text with limited semantic checks",
+    "M3 two string intentions, nonbinding"
+  ],
+  "historical_release_verification": {
+    "status": "implementation_verified_pilot_complete",
+    "source_sha256": "677ddbd9ed5cb9e9b3ca838a18e336760cdfa895b4ac9cc7456a3c66b3b184f1",
+    "simulation_config": {
+      "warmup_periods": 30,
+      "evaluation_periods": 100,
+      "lead_time": 2,
+      "demand_mean": 10.0,
+      "demand_std": 3.0,
+      "initial_inventory": 0,
+      "initial_backlog": 0,
+      "initial_arrival": 10,
+      "synthetic_demand": 10,
+      "safety_stock": 0.0,
+      "order_cap": 100,
+      "holding_cost": 1.0,
+      "backlog_cost": 1.0,
+      "variable_order_cost": 1.0,
+      "fixed_order_cost": 1.0,
+      "forecast_window": 30,
+      "ses_alpha": 0.3,
+      "std_ddof": 1
+    },
+    "api_config": {
+      "model": "google/gemini-2.5-flash-lite",
+      "endpoint": "https://openrouter.ai/api/v1/responses",
+      "provider": "google-ai-studio/flex",
+      "service_tier": "flex",
+      "temperature": 0.1,
+      "timeout_seconds": 60.0,
+      "max_retries": 1,
+      "retry_backoff_seconds": 1.0,
+      "max_output_tokens": 300,
+      "input_usd_per_million": 0.05,
+      "output_usd_per_million": 0.2
+    },
+    "registered_condition_count": 102,
+    "offline_tests_passed": 66,
+    "offline_test_log": "docs/verification-tests-final.txt",
+    "all_102_conditions_checked_with_mock": true,
+    "real_api_smoke": {
+      "conditions": [
+        "A",
+        "C1M2T1",
+        "C2M3T3",
+        "C3M1T2",
+        "C3M4T4",
+        "D_bullwhip",
+        "D_cost"
+      ],
+      "seed": 9001,
+      "evaluation_periods": 2,
+      "all_complete": true,
+      "api_calls": 127,
+      "retries": 1,
+      "fallbacks": 0,
+      "reported_cost_usd": 0.0055636
+    },
+    "fixed_during_review": [
+      "row total_cost consistency",
+      "finite budget values",
+      "budget changes on same-source resume",
+      "replayed decision latency kept missing",
+      "stop checked before each physical API attempt",
+      "LLM selected method retained separately from fallback method",
+      "bounded retry for transient Windows JSON replacement locks",
+      "status reader restricted to completed summaries"
+    ],
+    "pilot_plan": "docs/pilot_plan.json",
+    "no_statistical_inference_from_smoke": true,
+    "independent_audits": {
+      "warmup": "docs/warmup_audit.json",
+      "information_boundaries": "docs/smoke_information_audit.json",
+      "completed_pilot": "docs/final_pilot_audit.json"
+    },
+    "source_snapshot": "results/pilot/source_snapshot",
+    "known_semantic_limit": "M2 checks reject explicit digits and explicit future action patterns; qualitative current-order intention wording is retained and requires semantic interpretation. See the information audit.",
+    "pilot_source_sha256": "e6c3297ea3398bd84552313f2fa5c3fd69d43fe8e0064d1bcba6037c8eb59525",
+    "release_changes": "docs/release_changes.json",
+    "pilot": {
+      "complete": true,
+      "conditions": [
+        "A",
+        "C0M0T2",
+        "C3M1T2",
+        "C3M1T4"
+      ],
+      "seeds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "episodes": 32,
+      "decisions": 12800,
+      "api_calls": 19200,
+      "reported_cost_usd": 0.75727686,
+      "total_current_task_cost_with_smoke_usd": 0.76284046,
+      "input_tokens": 12168638,
+      "output_tokens": 744421,
+      "total_tokens": 12913059,
+      "retry_count": 0,
+      "format_failure_count": 0,
+      "fallback_count": 0,
+      "operational_interruptions": 1,
+      "resumed_same_frozen_source": true,
+      "duplicate_generation_calls": 0,
+      "replayed_decisions": 1,
+      "interpretation": "No primary contrast significant after prespecified Holm adjustment; observed lower costs accompanied by lower immediate fill rate.",
+      "report": "PILOT_RESULTS.md"
+    }
+  },
+  "offline_test_source_sha256": "020a7c6420638ba277dce56cd1f943ed7a5d2f96f7dd77da8e8d0f61fa1c480a",
+  "documentation_only_update": {
+    "recorded_at_utc": "2026-10-10T23:54:03.406284+00:00",
+    "scope": "README explanations and Python comments only; no behavior, schema, prompt or condition changes.",
+    "previous_source_sha256": "020a7c6420638ba277dce56cd1f943ed7a5d2f96f7dd77da8e8d0f61fa1c480a",
+    "current_source_sha256": "2fd78b00f2aefdb9f22954904ab891c2fa22e510f9dfc0845d91286a51450c56",
+    "executable_ast_sha256_before_and_after": "8511488a5d3d9d4166b95b14aef69a6f98def5835e75f2d147b9e699dfe5d6e9",
+    "all_scm_executable_syntax_unchanged": true,
+    "test_suite_rerun": false,
+    "prior_test_count": 79,
+    "new_paid_api_requests": 0,
+    "documentation_topics": [
+      "Current implementation versus pending C3/M2/M3 choices",
+      "raw field meanings, quantity correction examples and null versus zero"
+    ]
+  }
+}

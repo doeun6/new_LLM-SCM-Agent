@@ -1,0 +1,929 @@
+[
+  {
+    "id": "A",
+    "c": "C0",
+    "m": "M0",
+    "t": null,
+    "objective": "cost",
+    "reference": null,
+    "direct_order": true
+  },
+  {
+    "id": "C0M0T0",
+    "c": "C0",
+    "m": "M0",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M0T1",
+    "c": "C0",
+    "m": "M0",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M0T2",
+    "c": "C0",
+    "m": "M0",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M0T3",
+    "c": "C0",
+    "m": "M0",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M0T4",
+    "c": "C0",
+    "m": "M0",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M1T0",
+    "c": "C0",
+    "m": "M1",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M1T1",
+    "c": "C0",
+    "m": "M1",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M1T2",
+    "c": "C0",
+    "m": "M1",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M1T3",
+    "c": "C0",
+    "m": "M1",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M1T4",
+    "c": "C0",
+    "m": "M1",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M2T0",
+    "c": "C0",
+    "m": "M2",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M2T1",
+    "c": "C0",
+    "m": "M2",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M2T2",
+    "c": "C0",
+    "m": "M2",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M2T3",
+    "c": "C0",
+    "m": "M2",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M2T4",
+    "c": "C0",
+    "m": "M2",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M3T0",
+    "c": "C0",
+    "m": "M3",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M3T1",
+    "c": "C0",
+    "m": "M3",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M3T2",
+    "c": "C0",
+    "m": "M3",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M3T3",
+    "c": "C0",
+    "m": "M3",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M3T4",
+    "c": "C0",
+    "m": "M3",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M4T0",
+    "c": "C0",
+    "m": "M4",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M4T1",
+    "c": "C0",
+    "m": "M4",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M4T2",
+    "c": "C0",
+    "m": "M4",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M4T3",
+    "c": "C0",
+    "m": "M4",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C0M4T4",
+    "c": "C0",
+    "m": "M4",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M0T0",
+    "c": "C1",
+    "m": "M0",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M0T1",
+    "c": "C1",
+    "m": "M0",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M0T2",
+    "c": "C1",
+    "m": "M0",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M0T3",
+    "c": "C1",
+    "m": "M0",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M0T4",
+    "c": "C1",
+    "m": "M0",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M1T0",
+    "c": "C1",
+    "m": "M1",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M1T1",
+    "c": "C1",
+    "m": "M1",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M1T2",
+    "c": "C1",
+    "m": "M1",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M1T3",
+    "c": "C1",
+    "m": "M1",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M1T4",
+    "c": "C1",
+    "m": "M1",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M2T0",
+    "c": "C1",
+    "m": "M2",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M2T1",
+    "c": "C1",
+    "m": "M2",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M2T2",
+    "c": "C1",
+    "m": "M2",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M2T3",
+    "c": "C1",
+    "m": "M2",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M2T4",
+    "c": "C1",
+    "m": "M2",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M3T0",
+    "c": "C1",
+    "m": "M3",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M3T1",
+    "c": "C1",
+    "m": "M3",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M3T2",
+    "c": "C1",
+    "m": "M3",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M3T3",
+    "c": "C1",
+    "m": "M3",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M3T4",
+    "c": "C1",
+    "m": "M3",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M4T0",
+    "c": "C1",
+    "m": "M4",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M4T1",
+    "c": "C1",
+    "m": "M4",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M4T2",
+    "c": "C1",
+    "m": "M4",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M4T3",
+    "c": "C1",
+    "m": "M4",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C1M4T4",
+    "c": "C1",
+    "m": "M4",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M0T0",
+    "c": "C2",
+    "m": "M0",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M0T1",
+    "c": "C2",
+    "m": "M0",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M0T2",
+    "c": "C2",
+    "m": "M0",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M0T3",
+    "c": "C2",
+    "m": "M0",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M0T4",
+    "c": "C2",
+    "m": "M0",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M1T0",
+    "c": "C2",
+    "m": "M1",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M1T1",
+    "c": "C2",
+    "m": "M1",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M1T2",
+    "c": "C2",
+    "m": "M1",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M1T3",
+    "c": "C2",
+    "m": "M1",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M1T4",
+    "c": "C2",
+    "m": "M1",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M2T0",
+    "c": "C2",
+    "m": "M2",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M2T1",
+    "c": "C2",
+    "m": "M2",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M2T2",
+    "c": "C2",
+    "m": "M2",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M2T3",
+    "c": "C2",
+    "m": "M2",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M2T4",
+    "c": "C2",
+    "m": "M2",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M3T0",
+    "c": "C2",
+    "m": "M3",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M3T1",
+    "c": "C2",
+    "m": "M3",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M3T2",
+    "c": "C2",
+    "m": "M3",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M3T3",
+    "c": "C2",
+    "m": "M3",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M3T4",
+    "c": "C2",
+    "m": "M3",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M4T0",
+    "c": "C2",
+    "m": "M4",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M4T1",
+    "c": "C2",
+    "m": "M4",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M4T2",
+    "c": "C2",
+    "m": "M4",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M4T3",
+    "c": "C2",
+    "m": "M4",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C2M4T4",
+    "c": "C2",
+    "m": "M4",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M0T0",
+    "c": "C3",
+    "m": "M0",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M0T1",
+    "c": "C3",
+    "m": "M0",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M0T2",
+    "c": "C3",
+    "m": "M0",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M0T3",
+    "c": "C3",
+    "m": "M0",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M0T4",
+    "c": "C3",
+    "m": "M0",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M1T0",
+    "c": "C3",
+    "m": "M1",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M1T1",
+    "c": "C3",
+    "m": "M1",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M1T2",
+    "c": "C3",
+    "m": "M1",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M1T3",
+    "c": "C3",
+    "m": "M1",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M1T4",
+    "c": "C3",
+    "m": "M1",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M2T0",
+    "c": "C3",
+    "m": "M2",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M2T1",
+    "c": "C3",
+    "m": "M2",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M2T2",
+    "c": "C3",
+    "m": "M2",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M2T3",
+    "c": "C3",
+    "m": "M2",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M2T4",
+    "c": "C3",
+    "m": "M2",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M3T0",
+    "c": "C3",
+    "m": "M3",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M3T1",
+    "c": "C3",
+    "m": "M3",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M3T2",
+    "c": "C3",
+    "m": "M3",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M3T3",
+    "c": "C3",
+    "m": "M3",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M3T4",
+    "c": "C3",
+    "m": "M3",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M4T0",
+    "c": "C3",
+    "m": "M4",
+    "t": "T0",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M4T1",
+    "c": "C3",
+    "m": "M4",
+    "t": "T1",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M4T2",
+    "c": "C3",
+    "m": "M4",
+    "t": "T2",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M4T3",
+    "c": "C3",
+    "m": "M4",
+    "t": "T3",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "C3M4T4",
+    "c": "C3",
+    "m": "M4",
+    "t": "T4",
+    "objective": "cost",
+    "reference": null,
+    "direct_order": false
+  },
+  {
+    "id": "D_cost",
+    "c": "C0",
+    "m": "M4",
+    "t": null,
+    "objective": "cost",
+    "reference": "LR30",
+    "direct_order": false
+  },
+  {
+    "id": "D_bullwhip",
+    "c": "C0",
+    "m": "M4",
+    "t": null,
+    "objective": "bullwhip",
+    "reference": "EOQ30",
+    "direct_order": false
+  }
+]

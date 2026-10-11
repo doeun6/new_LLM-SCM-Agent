@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-11",
+  "scope": "Standalone temporary-file reproduction only; no active result files were read and no API calls were made.",
+  "observations": [
+    "os.replace succeeded when the destination had no open reader.",
+    "os.replace and direct MoveFileExW failed with WinError 5 when a destination reader was open, even with CreateFileW sharing flags FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE (7).",
+    "ReplaceFileW succeeded with the shared-delete destination reader open; the old handle read the old snapshot and a newly opened path read the replacement."
+  ],
+  "interpretation": "Shared-delete reader flags alone did not solve the current os.replace writer race on this Windows environment. This reproduction establishes a compatible failure mechanism; it does not prove which process held the original pilot file.",
+  "status_change": "status.py reads batch_manifest.json and completed summary.json files only. It never opens active progress.json, checkpoint.json, or api_calls.jsonl. Reported cost and completion explicitly exclude unfinished episodes.",
+  "writer_followup": "Parent will add bounded PermissionError retries after the frozen pilot ends; no scm source was changed by this check.",
+  "reference": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-replacefilew"
+}

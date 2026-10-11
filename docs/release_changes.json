@@ -1,0 +1,55 @@
+{
+  "status": "direct_A_correction_current_release",
+  "delivered_source_sha256": "2fd78b00f2aefdb9f22954904ab891c2fa22e510f9dfc0845d91286a51450c56",
+  "previous_delivered_source_sha256": "677ddbd9ed5cb9e9b3ca838a18e336760cdfa895b4ac9cc7456a3c66b3b184f1",
+  "pilot_source_sha256": "e6c3297ea3398bd84552313f2fa5c3fd69d43fe8e0064d1bcba6037c8eb59525",
+  "runtime_changes": [
+    "A bypasses forecast and OUT; current C0 and D are its only dynamic order inputs.",
+    "Keep all 100 CMT combinations and add A plus two D references for 103 conditions.",
+    "Nullable reference quantity is logged and accepted only as optional support; final orders still require valid bounded integers.",
+    "A exhausted order-call failure uses normalized current D and logs this fallback.",
+    "Supported final-order prompts explicitly explain and integrate C, downstream M, and Q_base.",
+    "CLI exposes objective mapping; PowerShell forwards optional Objective and preserves fixed D objectives.",
+    "Historical-pilot analyzer rejects new source results and labels historical A correctly."
+  ],
+  "unchanged": [
+    "physical period flow",
+    "common 30-period warmup",
+    "C3 content",
+    "M2/M3 schemas",
+    "API model and routing",
+    "cost and bullwhip definitions"
+  ],
+  "tests_passed": 79,
+  "new_paid_api_requests": 0,
+  "original_experiment_source_preserved": "results/pilot/source_snapshot/scm",
+  "original_results_unchanged": true,
+  "prior_io_hardening_release": {
+    "pilot_source_sha256": "e6c3297ea3398bd84552313f2fa5c3fd69d43fe8e0064d1bcba6037c8eb59525",
+    "delivered_source_sha256": "677ddbd9ed5cb9e9b3ca838a18e336760cdfa895b4ac9cc7456a3c66b3b184f1",
+    "changed_runtime_files": [
+      "runner.py"
+    ],
+    "runtime_change_scope": "Only atomic_json file persistence: bounded PermissionError retry and temporary file cleanup. No logistics, forecasting, C/M/T, prompts, API, metric or analysis changes.",
+    "tests_passed_before_pilot": 58,
+    "tests_passed_after_io_hardening": 66,
+    "additional_monitoring_change": "status.py reads only completed summaries and explicitly excludes unfinished progress/spend.",
+    "original_experiment_source_preserved": "results/pilot/source_snapshot/scm",
+    "original_results_unchanged": true
+  },
+  "documentation_only_update": {
+    "recorded_at_utc": "2026-10-10T23:54:03.406284+00:00",
+    "scope": "README explanations and Python comments only; no behavior, schema, prompt or condition changes.",
+    "previous_source_sha256": "020a7c6420638ba277dce56cd1f943ed7a5d2f96f7dd77da8e8d0f61fa1c480a",
+    "current_source_sha256": "2fd78b00f2aefdb9f22954904ab891c2fa22e510f9dfc0845d91286a51450c56",
+    "executable_ast_sha256_before_and_after": "8511488a5d3d9d4166b95b14aef69a6f98def5835e75f2d147b9e699dfe5d6e9",
+    "all_scm_executable_syntax_unchanged": true,
+    "test_suite_rerun": false,
+    "prior_test_count": 79,
+    "new_paid_api_requests": 0,
+    "documentation_topics": [
+      "Current implementation versus pending C3/M2/M3 choices",
+      "raw field meanings, quantity correction examples and null versus zero"
+    ]
+  }
+}

@@ -1,0 +1,648 @@
+{
+  "created_utc": "2026-10-10T19:04:22.569861+00:00",
+  "status": "explanatory_diagnostic_no_tuning_or_run_exclusion",
+  "episode": "C0M0T2__cost__seed-3",
+  "source_folder": "results\\pilot\\episodes\\C0M0T2__cost__seed-3",
+  "frozen_source_hash": "e6c3297ea3398bd84552313f2fa5c3fd69d43fe8e0064d1bcba6037c8eb59525",
+  "finding": "The completed run has a documented surge in valid final LLM orders that overrides small or zero OUT references, propagates upstream, and leaves long-lived surplus inventories. Checked physical transitions, indexing, reference forecasts and presented context are consistent with the registered implementation.",
+  "finding_scope": "Observed sequence and ledger evidence; rationales are evidence of expressed reasoning, not proof of inaccessible internal model reasoning. One run does not identify a general treatment effect.",
+  "headline_metrics": {
+    "cost_per_period": 707.86,
+    "total_cost": 70786.0,
+    "retailer_immediate_fill_rate": 0.8691489361702127,
+    "global_bullwhip": 45.90814834893201,
+    "retry_count": 0,
+    "format_failure_count": 0,
+    "fallback_count": 0,
+    "reported_cost_usd": 0.0217203
+  },
+  "cost_component_shares": {
+    "holding_cost": {
+      "cost": 58083.0,
+      "share_of_total": 0.8205436103184246
+    },
+    "backlog_cost": {
+      "cost": 8262.0,
+      "share_of_total": 0.11671799508377363
+    },
+    "variable_order_cost": {
+      "cost": 4350.0,
+      "share_of_total": 0.06145282965558161
+    },
+    "fixed_order_cost": {
+      "cost": 91.0,
+      "share_of_total": 0.001285564942220213
+    }
+  },
+  "per_agent": [
+    {
+      "agent": 0,
+      "role": "retailer",
+      "total_cost": 23302.0,
+      "cost_components": {
+        "holding_cost": 22037.0,
+        "backlog_cost": 268.0,
+        "variable_order_cost": 967.0,
+        "fixed_order_cost": 30.0
+      },
+      "peak_inventory": {
+        "t": 56,
+        "I": 618
+      },
+      "peak_backlog": {
+        "t": 43,
+        "B": 38
+      },
+      "cap_order_count": 6,
+      "zero_order_count": 70,
+      "positive_order_count": 30,
+      "deviation_count": 20,
+      "absolute_order_deviation": 858,
+      "total_final_orders": 967,
+      "terminal_I": 42,
+      "terminal_B": 0,
+      "terminal_P": 0
+    },
+    {
+      "agent": 1,
+      "role": "wholesaler",
+      "total_cost": 14224.0,
+      "cost_components": {
+        "holding_cost": 9717.0,
+        "backlog_cost": 3494.0,
+        "variable_order_cost": 993.0,
+        "fixed_order_cost": 20.0
+      },
+      "peak_inventory": {
+        "t": 56,
+        "I": 149
+      },
+      "peak_backlog": {
+        "t": 48,
+        "B": 476
+      },
+      "cap_order_count": 7,
+      "zero_order_count": 80,
+      "positive_order_count": 20,
+      "deviation_count": 5,
+      "absolute_order_deviation": 48,
+      "total_final_orders": 993,
+      "terminal_I": 39,
+      "terminal_B": 0,
+      "terminal_P": 0
+    },
+    {
+      "agent": 2,
+      "role": "distributor",
+      "total_cost": 16267.0,
+      "cost_components": {
+        "holding_cost": 12285.0,
+        "backlog_cost": 2852.0,
+        "variable_order_cost": 1110.0,
+        "fixed_order_cost": 20.0
+      },
+      "peak_inventory": {
+        "t": 55,
+        "I": 162
+      },
+      "peak_backlog": {
+        "t": 46,
+        "B": 325
+      },
+      "cap_order_count": 9,
+      "zero_order_count": 80,
+      "positive_order_count": 20,
+      "deviation_count": 0,
+      "absolute_order_deviation": 0,
+      "total_final_orders": 1110,
+      "terminal_I": 130,
+      "terminal_B": 0,
+      "terminal_P": 0
+    },
+    {
+      "agent": 3,
+      "role": "factory",
+      "total_cost": 16993.0,
+      "cost_components": {
+        "holding_cost": 14044.0,
+        "backlog_cost": 1648.0,
+        "variable_order_cost": 1280.0,
+        "fixed_order_cost": 21.0
+      },
+      "peak_inventory": {
+        "t": 55,
+        "I": 183
+      },
+      "peak_backlog": {
+        "t": 44,
+        "B": 160
+      },
+      "cap_order_count": 10,
+      "zero_order_count": 79,
+      "positive_order_count": 21,
+      "deviation_count": 0,
+      "absolute_order_deviation": 0,
+      "total_final_orders": 1280,
+      "terminal_I": 183,
+      "terminal_B": 0,
+      "terminal_P": 0
+    }
+  ],
+  "critical_retailer_window": {
+    "periods": [
+      42,
+      49
+    ],
+    "customer_demand_sum": 67,
+    "baseline_order_sum": 10,
+    "final_order_sum": 720,
+    "excess_final_over_baseline": 710,
+    "consecutive_max_orders_periods": [
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "first_large_override": {
+      "t": 42,
+      "Q_base": 10,
+      "Q_final": 40
+    },
+    "first_zero_reference_override": {
+      "t": 43,
+      "Q_base": 0,
+      "Q_final": 80
+    }
+  },
+  "retailer_timeline": [
+    {
+      "t": 38,
+      "D": 9,
+      "A": 5,
+      "X": 5,
+      "I": 0,
+      "B": 15,
+      "P_pre": 21,
+      "Q_base": 9,
+      "Q_final": 15,
+      "forecast": [
+        7.629885057471264,
+        7.56514645902855
+      ],
+      "rationale": "The current backlog is high, and the order-up-to level (Q_base) suggests a need for replenishment to meet anticipated demand and clear the backlog."
+    },
+    {
+      "t": 39,
+      "D": 11,
+      "A": 7,
+      "X": 7,
+      "I": 0,
+      "B": 19,
+      "P_pre": 29,
+      "Q_base": 6,
+      "Q_final": 6,
+      "forecast": [
+        8.045977011494251,
+        8.00593251761216
+      ],
+      "rationale": "The current backlog is high, and the Q_base suggests a replenishment of 6. Maintaining this order quantity balances inventory and backlog to minimize costs."
+    },
+    {
+      "t": 40,
+      "D": 12,
+      "A": 4,
+      "X": 4,
+      "I": 0,
+      "B": 27,
+      "P_pre": 31,
+      "Q_base": 13,
+      "Q_final": 13,
+      "forecast": [
+        8.735632183908045,
+        8.740081572117166
+      ],
+      "rationale": "The current backlog is high, and the Q_base suggests a replenishment of 13. Ordering 13 will help clear the backlog and meet anticipated demand."
+    },
+    {
+      "t": 41,
+      "D": 13,
+      "A": 7,
+      "X": 7,
+      "I": 0,
+      "B": 33,
+      "P_pre": 37,
+      "Q_base": 15,
+      "Q_final": 15,
+      "forecast": [
+        9.632183908045976,
+        9.694475342973673
+      ],
+      "rationale": "Maintain the Q_base order quantity to cover the current backlog and anticipated demand, ensuring sufficient inventory for future periods."
+    },
+    {
+      "t": 42,
+      "D": 9,
+      "A": 12,
+      "X": 12,
+      "I": 0,
+      "B": 30,
+      "P_pre": 40,
+      "Q_base": 10,
+      "Q_final": 40,
+      "forecast": [
+        9.77471264367816,
+        9.848350018539117
+      ],
+      "rationale": "The current backlog is high, and the incoming demand is significant. Ordering 40 units will help cover the backlog and anticipated demand over the next two periods."
+    },
+    {
+      "t": 43,
+      "D": 8,
+      "A": 0,
+      "X": 0,
+      "I": 0,
+      "B": 38,
+      "P_pre": 80,
+      "Q_base": 0,
+      "Q_final": 80,
+      "forecast": [
+        9.937931034482759,
+        10.030700778642936
+      ],
+      "rationale": "The current backlog is high, and the incoming demand is expected to continue. Ordering 80 units will help meet future demand and reduce the backlog."
+    },
+    {
+      "t": 44,
+      "D": 8,
+      "A": 11,
+      "X": 11,
+      "I": 0,
+      "B": 35,
+      "P_pre": 149,
+      "Q_base": 0,
+      "Q_final": 100,
+      "forecast": [
+        9.760919540229885,
+        9.840118650352244
+      ],
+      "rationale": "The current backlog is high, and the incoming demand is consistent. Ordering the maximum allowed quantity will help to cover current and future demand and reduce backlog."
+    },
+    {
+      "t": 45,
+      "D": 7,
+      "A": 25,
+      "X": 25,
+      "I": 0,
+      "B": 17,
+      "P_pre": 224,
+      "Q_base": 0,
+      "Q_final": 100,
+      "forecast": [
+        9.59080459770115,
+        9.663329625509826
+      ],
+      "rationale": "The current backlog is high, and the incoming demand is expected to continue. Ordering the maximum quantity will help to meet future demand and reduce potential backlogs."
+    },
+    {
+      "t": 46,
+      "D": 10,
+      "A": 23,
+      "X": 23,
+      "I": 0,
+      "B": 4,
+      "P_pre": 301,
+      "Q_base": 0,
+      "Q_final": 100,
+      "forecast": [
+        9.83448275862069,
+        9.920578420467185
+      ],
+      "rationale": "High backlog and pre-order pipeline necessitate a large order to meet future demand and clear existing obligations."
+    },
+    {
+      "t": 47,
+      "D": 8,
+      "A": 12,
+      "X": 12,
+      "I": 0,
+      "B": 0,
+      "P_pre": 389,
+      "Q_base": 0,
+      "Q_final": 100,
+      "forecast": [
+        9.583908045977012,
+        9.649536522061549
+      ],
+      "rationale": "The current backlog is zero and the incoming demand is low. Ordering the maximum allowed quantity will build inventory to cover potential future demand and minimize future operating costs."
+    },
+    {
+      "t": 48,
+      "D": 13,
+      "A": 36,
+      "X": 13,
+      "I": 23,
+      "B": 0,
+      "P_pre": 453,
+      "Q_base": 0,
+      "Q_final": 100,
+      "forecast": [
+        9.91264367816092,
+        9.982276603633668
+      ],
+      "rationale": "High backlog and pre-order pipeline indicate strong future demand. Ordering the maximum allowed quantity of 100 will help meet this demand and reduce future backlogs."
+    },
+    {
+      "t": 49,
+      "D": 4,
+      "A": 3,
+      "X": 4,
+      "I": 22,
+      "B": 0,
+      "P_pre": 550,
+      "Q_base": 0,
+      "Q_final": 100,
+      "forecast": [
+        8.986206896551725,
+        8.998220244716352
+      ],
+      "rationale": "The current backlog is zero and inventory is sufficient. Ordering the maximum allowed quantity of 100 will help build inventory to meet potential future demand and avoid future backlogs."
+    },
+    {
+      "t": 50,
+      "D": 7,
+      "A": 74,
+      "X": 7,
+      "I": 89,
+      "B": 0,
+      "P_pre": 576,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        8.760919540229883,
+        8.762699295513533
+      ],
+      "rationale": "Current inventory is high and backlog is zero. No order is needed to meet future demand."
+    },
+    {
+      "t": 51,
+      "D": 7,
+      "A": 100,
+      "X": 7,
+      "I": 182,
+      "B": 0,
+      "P_pre": 476,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        8.549425287356321,
+        8.541861327400815
+      ],
+      "rationale": "Current inventory is high and there is no backlog. No order is needed to meet future demand."
+    },
+    {
+      "t": 52,
+      "D": 4,
+      "A": 100,
+      "X": 4,
+      "I": 278,
+      "B": 0,
+      "P_pre": 376,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        7.951724137931034,
+        7.916351501668521
+      ],
+      "rationale": "Current inventory is high and backlog is zero. No order is needed to meet future demand."
+    },
+    {
+      "t": 53,
+      "D": 16,
+      "A": 100,
+      "X": 16,
+      "I": 362,
+      "B": 0,
+      "P_pre": 276,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        9.062068965517241,
+        9.085428253615127
+      ],
+      "rationale": "The current inventory is sufficient to meet demand for the next two periods, and there is no backlog. Therefore, no order is placed."
+    },
+    {
+      "t": 54,
+      "D": 3,
+      "A": 100,
+      "X": 3,
+      "I": 459,
+      "B": 0,
+      "P_pre": 176,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        8.10344827586207,
+        8.071412680756396
+      ],
+      "rationale": "Current inventory is high and backlog is zero. No order is needed to meet future demand."
+    },
+    {
+      "t": 55,
+      "D": 9,
+      "A": 100,
+      "X": 9,
+      "I": 550,
+      "B": 0,
+      "P_pre": 76,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        8.259770114942528,
+        8.23997033741194
+      ],
+      "rationale": "Current inventory is high and backlog is zero. No order is needed to meet future demand."
+    },
+    {
+      "t": 56,
+      "D": 8,
+      "A": 76,
+      "X": 8,
+      "I": 618,
+      "B": 0,
+      "P_pre": 0,
+      "Q_base": 0,
+      "Q_final": 0,
+      "forecast": [
+        8.363218390804597,
+        8.356544308490916
+      ],
+      "rationale": "Current inventory is high and there is no backlog, so no order is needed to meet future demand."
+    }
+  ],
+  "expressed_reasoning_examples": [
+    {
+      "t": 46,
+      "I": 0,
+      "B": 4,
+      "P_pre": 301,
+      "Q_base": 0,
+      "Q_final": 100,
+      "rationale": "High backlog and pre-order pipeline necessitate a large order to meet future demand and clear existing obligations.",
+      "interpretation": "The written reason treats high pre-order pipeline as a reason to add another large order, although pipeline represents already-outstanding supply."
+    },
+    {
+      "t": 48,
+      "I": 23,
+      "B": 0,
+      "P_pre": 453,
+      "Q_base": 0,
+      "Q_final": 100,
+      "rationale": "High backlog and pre-order pipeline indicate strong future demand. Ordering the maximum allowed quantity of 100 will help meet this demand and reduce future backlogs.",
+      "interpretation": "The written claim of high backlog conflicts with current B=0; historical backlog and outstanding supply are apparently not weighed consistently."
+    }
+  ],
+  "propagation_and_inventory_tail": {
+    "observation": "Retailer executed orders become same-period wholesaler demand, followed by distributor and factory demand. Local regression therefore sees the realized upstream order surge, not the approximately-ten-unit customer demand. Delayed fulfilled orders subsequently arrive even after new orders stop.",
+    "factory_final_order_zero_periods": [
+      54,
+      130
+    ],
+    "factory_inventory_183_periods": [
+      55,
+      130
+    ],
+    "factory_holding_cost_on_that_plateau": 13908,
+    "retailer_peak_inventory": 618,
+    "retailer_peak_inventory_periods": [
+      56
+    ]
+  },
+  "external_demand_evaluation": {
+    "count": 100,
+    "sum": 940,
+    "mean": 9.4,
+    "minimum": 0,
+    "maximum": 17,
+    "scenario": "Normal(10,3) rounded nonnegative; no spike/mean-shift scenario applied."
+  },
+  "independent_checks": {
+    "status": "passed",
+    "full_period_range": [
+      1,
+      130
+    ],
+    "agent_periods_checked": 520,
+    "evaluation_API_payloads_checked": 400,
+    "checks_run": 7210,
+    "counts": {
+      "identical_warmup_hash": 1,
+      "identical_demand_hash": 1,
+      "complete_evaluation_row_keys": 1,
+      "checkpoint_complete": 1,
+      "same_period_downstream_D": 520,
+      "actual_shipment_lead_time": 520,
+      "shipment_and_inventory_conservation": 520,
+      "backlog_conservation": 520,
+      "pre_and_post_pipeline": 520,
+      "P_equals_transit_plus_upstream_backlog": 520,
+      "immediate_fulfillment": 520,
+      "all_four_costs": 520,
+      "current_inclusive_30_LR_forecast": 520,
+      "OUT_reference_and_half_up": 520,
+      "execution_matches_actual_API_order": 400,
+      "API_current_context_timestamp": 400,
+      "API_history_exact_raw10": 400,
+      "API_prior_orders_exact9": 400,
+      "API_support_and_no_message": 400,
+      "checkpoint_matches_complete_history": 4,
+      "summary_cost": 1,
+      "summary_cost_per_period": 1
+    },
+    "failures": [],
+    "reference_math": "Exact rational OLS and OUT; direct conservation and t+2 shipment reconstruction independent of simulator functions."
+  },
+  "API_evidence": {
+    "actual_attempts": 400,
+    "all_success": true,
+    "all_task_order": true,
+    "forecast_is_local_T2": true,
+    "arithmetic_error_count": 0,
+    "all_final_orders_match_raw_API_output_after_common_normalization": true,
+    "retailer_cap_orders_were_returned_as_100": true
+  },
+  "completed_comparators_observed": [
+    {
+      "condition": "C0M0T2",
+      "seed": 1,
+      "complete": true,
+      "cost_per_period": 79.5,
+      "total_cost": 7950.0,
+      "cost_components": {
+        "holding_cost": 1447.0,
+        "backlog_cost": 2256.0,
+        "variable_order_cost": 3902.0,
+        "fixed_order_cost": 345.0
+      },
+      "warmup_hash": "e325b8abbd5c7204ec2b30079a94c17b2ff782616b65dc0cf6a3df36b98e5c92",
+      "demand_hash": "0de141cc2e7a5a2aed49fc70ec5a1318d492e87ec354d5e9578ec963a219bcbf",
+      "same_seed3_warmup": false,
+      "same_seed3_demand": false
+    },
+    {
+      "condition": "C0M0T2",
+      "seed": 2,
+      "complete": true,
+      "cost_per_period": 74.42,
+      "total_cost": 7442.0,
+      "cost_components": {
+        "holding_cost": 1058.0,
+        "backlog_cost": 2073.0,
+        "variable_order_cost": 3955.0,
+        "fixed_order_cost": 356.0
+      },
+      "warmup_hash": "2555b30fb72e2c406fd1035c17a7383b3c7c03254580014d45265ec3da78baf4",
+      "demand_hash": "99448e8b386d2e10fd8b458d37504f113ddbabac1b8050015dd55a3211276f1b",
+      "same_seed3_warmup": false,
+      "same_seed3_demand": false
+    },
+    {
+      "condition": "C0M0T2",
+      "seed": 3,
+      "complete": true,
+      "cost_per_period": 707.86,
+      "total_cost": 70786.0,
+      "cost_components": {
+        "holding_cost": 58083.0,
+        "backlog_cost": 8262.0,
+        "variable_order_cost": 4350.0,
+        "fixed_order_cost": 91.0
+      },
+      "warmup_hash": "498ce20a13550b8bbaaea08d700a7899e85175bb1656be081397acf8d0ab9094",
+      "demand_hash": "acb16143b7b6f8000557bc5d3c2b42234e3f09c038713ff5a4d252fd01811617",
+      "same_seed3_warmup": true,
+      "same_seed3_demand": true
+    },
+    {
+      "condition": "C3M1T2",
+      "seed": 3,
+      "complete": true,
+      "cost_per_period": 81.57,
+      "total_cost": 8157.0,
+      "cost_components": {
+        "holding_cost": 1091.0,
+        "backlog_cost": 2927.0,
+        "variable_order_cost": 3785.0,
+        "fixed_order_cost": 354.0
+      },
+      "warmup_hash": "498ce20a13550b8bbaaea08d700a7899e85175bb1656be081397acf8d0ab9094",
+      "demand_hash": "acb16143b7b6f8000557bc5d3c2b42234e3f09c038713ff5a4d252fd01811617",
+      "same_seed3_warmup": true,
+      "same_seed3_demand": true
+    }
+  ],
+  "comparison_limit": "C3M1T2 changes C and M together relative to C0M0T2. Its lower cost on the same seed is descriptive paired evidence, not isolation of a single-factor cause. No outcome is removed as an outlier.",
+  "changes_made": "Only this diagnostic JSON was written. No frozen source, prompt, configuration, demand, executed orders or results were edited; no API calls were made."
+}

@@ -1,0 +1,14 @@
+{
+  "recorded_at_utc": "2026-10-11T00:05:05.131697+00:00",
+  "source_sha256": "2fd78b00f2aefdb9f22954904ab891c2fa22e510f9dfc0845d91286a51450c56",
+  "scope": "Fresh export of staged source, tests, configs and documentation only. No local results or Word sources copied.",
+  "staged_files_checked": 45,
+  "local_markdown_links_checked": 58,
+  "possible_secret_matches": 0,
+  "absolute_local_user_path_matches": 0,
+  "offline_tests_passed": 79,
+  "offline_test_log": "docs/publication-tests.txt",
+  "paid_api_requests": 0,
+  "registered_conditions": 103,
+  "runtime_changes_this_publication": false
+}

@@ -1,0 +1,110 @@
+{
+  "complete": false,
+  "completed": 15,
+  "expected": 32,
+  "budget_accounted_usd": 0.438648209999997,
+  "errors": [
+    {
+      "condition": "C3M1T2",
+      "seed": 6,
+      "type": "PermissionError",
+      "message": "[WinError 5] 액세스가 거부되었습니다: 'results\\\\pilot\\\\episodes\\\\C3M1T2__cost__seed-6\\\\progress.json.tmp-277b4296ac444d4b9474575827a35154' -> 'results\\\\pilot\\\\episodes\\\\C3M1T2__cost__seed-6\\\\progress.json'"
+    },
+    {
+      "condition": "C3M1T4",
+      "seed": 6,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    },
+    {
+      "condition": "A",
+      "seed": 7,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C0M0T2",
+      "seed": 7,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C3M1T2",
+      "seed": 7,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C3M1T4",
+      "seed": 7,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "A",
+      "seed": 8,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C0M0T2",
+      "seed": 8,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C3M1T2",
+      "seed": 8,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C3M1T4",
+      "seed": 8,
+      "type": "CancelledError",
+      "message": ""
+    },
+    {
+      "condition": "C3M1T4",
+      "seed": 5,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    },
+    {
+      "condition": "A",
+      "seed": 6,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    },
+    {
+      "condition": "A",
+      "seed": 5,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    },
+    {
+      "condition": "C0M0T2",
+      "seed": 6,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    },
+    {
+      "condition": "C3M1T2",
+      "seed": 5,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    },
+    {
+      "condition": "C3M1T4",
+      "seed": 4,
+      "type": "FatalAPIError",
+      "message": "Batch stop requested before API call"
+    },
+    {
+      "condition": "A",
+      "seed": 4,
+      "type": "FatalAPIError",
+      "message": "Run stopped after another episode failed; checkpoint retained"
+    }
+  ]
+}

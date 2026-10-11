@@ -1,0 +1,580 @@
+{
+  "audit_type": "independent_read_only_smoke_information_audit",
+  "created_at_utc": "2026-10-10T18:49:28.483654+00:00",
+  "scope": "Seven completed smoke episodes, seed 9001, evaluation periods 31-32. No pilot output inspected and no new API call made.",
+  "source_hashes_recorded": [
+    "40c0080fce7e8b61ea6fd0655f4cc9987e388812b2c4fbb1198de8949fe512a6"
+  ],
+  "episodes": [
+    {
+      "condition": "A",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 16,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\A__cost__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\A__cost__seed-9001\\api_calls.jsonl"
+      }
+    },
+    {
+      "condition": "C1M2T1",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 23,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\C1M2T1__cost__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\C1M2T1__cost__seed-9001\\api_calls.jsonl"
+      }
+    },
+    {
+      "condition": "C2M3T3",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 30,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\C2M3T3__cost__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\C2M3T3__cost__seed-9001\\api_calls.jsonl"
+      }
+    },
+    {
+      "condition": "C3M1T2",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 8,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\C3M1T2__cost__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\C3M1T2__cost__seed-9001\\api_calls.jsonl"
+      }
+    },
+    {
+      "condition": "C3M4T4",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 22,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\C3M4T4__cost__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\C3M4T4__cost__seed-9001\\api_calls.jsonl"
+      }
+    },
+    {
+      "condition": "D_bullwhip",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 14,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\D_bullwhip__bullwhip__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\D_bullwhip__bullwhip__seed-9001\\api_calls.jsonl"
+      }
+    },
+    {
+      "condition": "D_cost",
+      "seed": 9001,
+      "periods": [
+        31,
+        32
+      ],
+      "agent_periods": 8,
+      "api_attempts": 14,
+      "fallbacks": 0,
+      "files": {
+        "periods": "results\\api_smoke\\episodes\\D_cost__cost__seed-9001\\periods.json",
+        "calls": "results\\api_smoke\\episodes\\D_cost__cost__seed-9001\\api_calls.jsonl"
+      }
+    }
+  ],
+  "checks": {
+    "downstream_message_identity_and_no_M0_message": {
+      "checked": 56,
+      "failures": []
+    },
+    "final_order_inputs_exactly_C_M_Q_base": {
+      "checked": 56,
+      "failures": []
+    },
+    "final_order_no_forecast_payload_or_conversation": {
+      "checked": 56,
+      "failures": []
+    },
+    "current_C_exact_state_timestamp": {
+      "checked": 56,
+      "failures": []
+    },
+    "raw_C_exact_window_and_allowed_fields": {
+      "checked": 40,
+      "failures": []
+    },
+    "forecast_exact_current_inclusive_30": {
+      "checked": 24,
+      "failures": []
+    },
+    "forecast_no_C_M_or_prior_conversation": {
+      "checked": 24,
+      "failures": []
+    },
+    "forecast_formula_present_only_T1_T3": {
+      "checked": 24,
+      "failures": []
+    },
+    "LLM_forecast_output_preserved_except_nonnegative_rule": {
+      "checked": 24,
+      "failures": []
+    },
+    "Q_base_uses_actual_support_and_correct_reference_semantics": {
+      "checked": 56,
+      "failures": []
+    },
+    "final_execution_shared_normalization": {
+      "checked": 56,
+      "failures": []
+    },
+    "P_post_equals_P_pre_plus_executed_Q": {
+      "checked": 56,
+      "failures": []
+    },
+    "factory_has_no_added_message_call_or_message": {
+      "checked": 14,
+      "failures": []
+    },
+    "direct_arithmetic_audit_matches_independent_calculation": {
+      "checked": 16,
+      "failures": []
+    },
+    "message_generation_only_allowed_C_M_committed_decision": {
+      "checked": 30,
+      "failures": [],
+      "note": "A correction attempt may add retry_feedback containing the previous validation error; this is execution-control metadata, not an additional state/history input."
+    },
+    "message_output_token_cap_300": {
+      "checked": 30,
+      "failures": []
+    },
+    "M2_delivered_message_no_digits": {
+      "checked": 6,
+      "failures": []
+    },
+    "selection_only_C_M_and_static_candidate_catalogue": {
+      "checked": 16,
+      "failures": []
+    },
+    "string_enum_selection_is_valid_and_executed": {
+      "checked": 16,
+      "failures": []
+    },
+    "M3_contains_exact_two_plan_fields": {
+      "checked": 6,
+      "failures": []
+    },
+    "C3_excludes_all_Q_history_and_raw_past_states": {
+      "checked": 16,
+      "failures": []
+    },
+    "C3_statistics_match_current_inclusive_10_sample_SD": {
+      "checked": 64,
+      "failures": []
+    },
+    "local_forecasts_match_independent_math": {
+      "checked": 16,
+      "failures": []
+    },
+    "M1_environment_exact_state_and_10_period_stats": {
+      "checked": 6,
+      "failures": []
+    },
+    "received_M1_uses_downstream_same_period_post_order_P": {
+      "checked": 6,
+      "failures": []
+    },
+    "actual_model_provider_tier_verified": {
+      "checked": 127,
+      "failures": []
+    },
+    "all_usage_and_cost_present": {
+      "checked": 127,
+      "failures": []
+    },
+    "single_M2_numeric_failure_retried_successfully": {
+      "checked": 1,
+      "failures": []
+    },
+    "retry_keeps_identical_information_and_adds_only_validation_error": {
+      "checked": 1,
+      "failures": []
+    }
+  },
+  "hard_checks_passed": true,
+  "notes": [
+    {
+      "severity": "semantic_review",
+      "topic": "M2 wording",
+      "observation": "All six delivered M2 messages use Observation/Interpretation/Intention headings. They contain no digits or explicit t+1/t+2 plans, but imperative Intention clauses may be read as prospective actions. The common instruction to distinguish intention and the M2 restriction to current reasoning create semantic ambiguity. This audit does not certify perfect natural-language exclusion of plans. Code was not changed."
+    }
+  ],
+  "direct_arithmetic_discrepancies_preserved": [
+    {
+      "condition": "C1M2T1",
+      "t": 31,
+      "agent": 0,
+      "used_forecast": [
+        11.566666666666666,
+        11.866666666666667
+      ],
+      "exact_audit": [
+        11.381609195402298,
+        11.520207638116425
+      ],
+      "error": [
+        0.18505747126436844,
+        0.34645902855024246
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 31,
+      "agent": 1,
+      "used_forecast": [
+        11.766666666666666,
+        12.133333333333333
+      ],
+      "exact_audit": [
+        12.317241379310346,
+        12.5119021134594
+      ],
+      "error": [
+        -0.5505747126436802,
+        -0.37856878012606643
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 31,
+      "agent": 2,
+      "used_forecast": [
+        13.56,
+        13.87
+      ],
+      "exact_audit": [
+        13.413793103448276,
+        13.672747497219133
+      ],
+      "error": [
+        0.1462068965517247,
+        0.19725250278086648
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 31,
+      "agent": 3,
+      "used_forecast": [
+        13.52,
+        13.95
+      ],
+      "exact_audit": [
+        14.903448275862068,
+        15.245606229143492
+      ],
+      "error": [
+        -1.3834482758620688,
+        -1.2956062291434929
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 32,
+      "agent": 0,
+      "used_forecast": [
+        11.766666666666666,
+        11.983333333333333
+      ],
+      "exact_audit": [
+        11.880459770114943,
+        12.049091583240639
+      ],
+      "error": [
+        -0.11379310344827687,
+        -0.06575824990730617
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 32,
+      "agent": 1,
+      "used_forecast": [
+        13.161290322580644,
+        13.483870967741934
+      ],
+      "exact_audit": [
+        12.935632183908046,
+        13.165888023730071
+      ],
+      "error": [
+        0.22565813867259799,
+        0.3179829440118631
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 32,
+      "agent": 2,
+      "used_forecast": [
+        16.575757575757574,
+        17.15151515151515
+      ],
+      "exact_audit": [
+        14.411494252873563,
+        14.72406377456433
+      ],
+      "error": [
+        2.164263322884011,
+        2.4274513769508186
+      ]
+    },
+    {
+      "condition": "C1M2T1",
+      "t": 32,
+      "agent": 3,
+      "used_forecast": [
+        17.85,
+        18.55
+      ],
+      "exact_audit": [
+        16.79310344827586,
+        17.231368186874306
+      ],
+      "error": [
+        1.0568965517241402,
+        1.3186318131256947
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 31,
+      "agent": 0,
+      "used_forecast": [
+        10.97979797979798,
+        11.287878787878787
+      ],
+      "exact_audit": [
+        11.381609195402298,
+        11.520207638116425
+      ],
+      "error": [
+        -0.40181121560431876,
+        -0.2323288502376375
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 31,
+      "agent": 1,
+      "used_forecast": [
+        11.766666666666666,
+        12.133333333333333
+      ],
+      "exact_audit": [
+        12.183908045977013,
+        12.372117167222841
+      ],
+      "error": [
+        -0.4172413793103473,
+        -0.2387838338895083
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 31,
+      "agent": 2,
+      "used_forecast": [
+        12.0,
+        12.3
+      ],
+      "exact_audit": [
+        13.280459770114943,
+        13.532962550982575
+      ],
+      "error": [
+        -1.280459770114943,
+        -1.232962550982574
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 31,
+      "agent": 3,
+      "used_forecast": [
+        13.333333333333334,
+        13.777777777777779
+      ],
+      "exact_audit": [
+        14.50344827586207,
+        14.826251390433814
+      ],
+      "error": [
+        -1.1701149425287358,
+        -1.0484736126560357
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 32,
+      "agent": 0,
+      "used_forecast": [
+        11.666666666666666,
+        11.933333333333332
+      ],
+      "exact_audit": [
+        11.880459770114943,
+        12.049091583240639
+      ],
+      "error": [
+        -0.2137931034482765,
+        -0.11575824990730688
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 32,
+      "agent": 1,
+      "used_forecast": [
+        13.636363636363635,
+        13.95959595959596
+      ],
+      "exact_audit": [
+        12.942528735632184,
+        13.173229514275121
+      ],
+      "error": [
+        0.693834900731451,
+        0.786366445320839
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 32,
+      "agent": 2,
+      "used_forecast": [
+        16.58,
+        17.15
+      ],
+      "exact_audit": [
+        14.551724137931036,
+        14.87119021134594
+      ],
+      "error": [
+        2.0282758620689627,
+        2.2788097886540584
+      ]
+    },
+    {
+      "condition": "C2M3T3",
+      "t": 32,
+      "agent": 3,
+      "used_forecast": [
+        17.68,
+        18.56
+      ],
+      "exact_audit": [
+        16.94712643678161,
+        17.393177604746015
+      ],
+      "error": [
+        0.7328735632183907,
+        1.166822395253984
+      ]
+    }
+  ],
+  "delivered_M2_messages_for_semantic_review": [
+    {
+      "t": 31,
+      "agent": 0,
+      "message": "Observation: Demand is slightly elevated and inventory is low. Interpretation: The recent trend suggests a need to increase stock to meet demand. Intention: Order to replenish inventory and cover expected demand."
+    },
+    {
+      "t": 31,
+      "agent": 1,
+      "message": "Observation: Demand is currently moderate with a low backlog. Interpretation: The recent demand pattern indicates a stable but not urgent need for replenishment. Intention: Place a minimal order to maintain stock levels without overstocking."
+    },
+    {
+      "t": 31,
+      "agent": 2,
+      "message": "Observation: Demand is moderate and the backlog is low. Interpretation: The current situation suggests a stable need for replenishment without immediate urgency. Intention: Place a minimal order to sustain current stock levels and avoid overstocking."
+    },
+    {
+      "t": 32,
+      "agent": 0,
+      "message": "Observation: The backlog is currently high, and incoming demand is moderate. Interpretation: The recent trend suggests a need to replenish stock to meet anticipated demand and clear the existing backlog. Intention: To place an order that balances inventory levels with expected customer needs."
+    },
+    {
+      "t": 32,
+      "agent": 1,
+      "message": "Observation: The backlog is currently high, and incoming demand is moderate. Interpretation: The recent trend suggests a need to replenish stock to meet anticipated demand and clear the existing backlog. Intention: To place an order that balances inventory levels with expected customer needs."
+    },
+    {
+      "t": 32,
+      "agent": 2,
+      "message": "Observation: The backlog is currently high, and incoming demand is moderate. Interpretation: The recent trend suggests a need to replenish stock to meet anticipated demand and clear the existing backlog. Intention: To place an order that balances inventory levels with expected customer needs."
+    }
+  ],
+  "totals": {
+    "agent_periods": 56,
+    "api_attempts": 127,
+    "successful_attempts": 126,
+    "retry_attempts": 1,
+    "fallbacks": 0,
+    "direct_calculation_decisions_with_discrepancy": 16,
+    "input_tokens": 85796,
+    "output_tokens": 6369,
+    "reported_cost_usd": 0.0055636
+  },
+  "limits": [
+    "Smoke covers observed calls, not all possible outputs or sustained availability.",
+    "M2/M3 natural-language content is not fully machine-verifiable.",
+    "The smoke is not a performance comparison or evidence for selecting experimental conditions."
+  ],
+  "input_file_hashes": {
+    "results\\api_smoke\\episodes\\A__cost__seed-9001\\periods.json": "7a78a697dba6152cad7ae3a45fa48116c94ef9b53b9e0344fdb20bf64b9a37eb",
+    "results\\api_smoke\\episodes\\A__cost__seed-9001\\api_calls.jsonl": "5f32abe9e93e7aa287f5195722ab2107b5c692fa4ed26c858859d7428914dd99",
+    "results\\api_smoke\\episodes\\C1M2T1__cost__seed-9001\\periods.json": "a44f69e6b7198b5376de7c329da7ab5b15f0c86c3297d6aa2125e5f756afee8b",
+    "results\\api_smoke\\episodes\\C1M2T1__cost__seed-9001\\api_calls.jsonl": "3b94a17249f763b81c302b505750333f9d3e778e1519b615269a90533af14bb0",
+    "results\\api_smoke\\episodes\\C2M3T3__cost__seed-9001\\periods.json": "5847ccc78b97ef2f68d801fb80a0fb3ed34db64ec6b276ad2656c20a5231b225",
+    "results\\api_smoke\\episodes\\C2M3T3__cost__seed-9001\\api_calls.jsonl": "b9f3f1b4b7e8b1370413046b32756cb55ace8b1c5f0e0e606311435e09ab18a5",
+    "results\\api_smoke\\episodes\\C3M1T2__cost__seed-9001\\periods.json": "b796fe52c7e3d2b9bb13b9bdc6d95ca8dfbbf477c3ceffcdcb321d3b70a71afe",
+    "results\\api_smoke\\episodes\\C3M1T2__cost__seed-9001\\api_calls.jsonl": "0977db38cbf324a44a06b44a35c3cbf228879098e9c92c33242437494d56aece",
+    "results\\api_smoke\\episodes\\C3M4T4__cost__seed-9001\\periods.json": "52cc0dd80c648f089a5d175d7400c2db9e0aac851c688bee362de79f2b5543ca",
+    "results\\api_smoke\\episodes\\C3M4T4__cost__seed-9001\\api_calls.jsonl": "5871f3e53f3feee00458cba985aab3f38782eda9b3264fc00258f3aa69cf0d3a",
+    "results\\api_smoke\\episodes\\D_bullwhip__bullwhip__seed-9001\\periods.json": "f3aec429b8323a4519c75eb34851305dde03e98e53baa41b6b3913d211b1fbfb",
+    "results\\api_smoke\\episodes\\D_bullwhip__bullwhip__seed-9001\\api_calls.jsonl": "5ccfb824b2ad678d1c8e71f560ad847bd0fcde25885ad694d53ec303102c277d",
+    "results\\api_smoke\\episodes\\D_cost__cost__seed-9001\\periods.json": "31b030550ac905f1f09082edf8adcadcaea433935a5f2c8db58caf630f1cb670",
+    "results\\api_smoke\\episodes\\D_cost__cost__seed-9001\\api_calls.jsonl": "f2f0b97488f8dd06335f4e34f4441b08d745c7defc86794bce8b66eb8e21af38"
+  }
+}
