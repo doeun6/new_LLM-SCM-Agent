@@ -64,6 +64,19 @@ class ProviderTests(unittest.TestCase):
             self.assertEqual(call.call_count, 2)
             self.assertEqual(sum(x['format_failure'] for x in p.events), 2)
 
+    @patch.dict(os.environ, {"OPENROUTER_API_KEY":"unit-test-placeholder"})
+    def test_m3_out_of_range_plan_shares_retry_budget_then_succeeds(self):
+        from scm.harness import _validate_message, plan_schema
+        p = OpenRouterProvider(APIConfig(retry_backoff_seconds=0), budget=Budget(1))
+        replies = [Response('{"plan_t_plus_1":101,"plan_t_plus_2":10}'),
+                   Response('{"plan_t_plus_1":12,"plan_t_plus_2":10}')]
+        with patch("scm.provider.urlopen", side_effect=replies) as call:
+            result = p.ask("message", "test", {}, plan_schema(100), {},
+                           validate=lambda v: _validate_message(v, "M3", 100))
+            self.assertEqual(result, {"plan_t_plus_1": 12, "plan_t_plus_2": 10})
+            self.assertEqual(call.call_count, 2)
+            self.assertEqual([x["format_failure"] for x in p.events], [True, False])
+
     def test_budget_reservation_prevents_parallel_overspend(self):
         b = Budget(1)
         b.reserve(.7)

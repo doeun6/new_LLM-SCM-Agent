@@ -7,7 +7,7 @@ from unittest.mock import patch
 from scm.config import SimulationConfig
 from scm.engine import make_warmup
 from scm.forecasting import forecast, normalize_order, order_up_to
-from scm.harness import Harness, build_C, _validate_message
+from scm.harness import Harness, build_C, _validate_message, plan_schema
 from scm.provider import MockProvider, RecoverableCallError, FatalAPIError, validate_schema
 from scm.registry import get_condition
 
@@ -71,18 +71,57 @@ class HarnessTests(unittest.TestCase):
                 for record in context["states"]:
                     self.assertEqual(set(record), {"t", "I", "B", "P_pre", "D"})
 
-    def test_summary_excludes_all_order_history_and_uses_current(self):
+    def test_summary_gives_order_statistics_without_raw_rows(self):
         env, row = self.begin()
         context = build_C("C3", env.agents[0].history, row)
-        self.assertNotIn("Q_base", json.dumps(context))
-        self.assertNotIn("Q_final", json.dumps(context))
         self.assertNotIn("states", context)
+        self.assertNotIn("past_orders", context)
         self.assertNotIn("slope", json.dumps(context))
         expected = [r["D"] for r in env.agents[0].history[-9:]]+[row["D"]]
         self.assertEqual(context["statistics"]["D"]["mean"], statistics.mean(expected))
         self.assertEqual(context["statistics"]["D"]["standard_deviation"], statistics.stdev(expected))
         self.assertEqual(set(context["statistics"]["D"]),
                          {"mean", "standard_deviation", "minimum", "maximum"})
+        # Orders: t-9..t-1 only, because the current order is not yet decided.
+        past = env.agents[0].history[-9:]
+        self.assertEqual((context["order_window"], context["order_period_start"],
+                          context["order_period_end"]), (9, 22, 30))
+        orders = context["order_statistics"]
+        self.assertEqual(set(orders), {"Q_base", "Q_final", "Q_final_minus_Q_base"})
+        self.assertEqual(set(context["order_definitions"]), set(orders))
+        final = [r["Q_final"] for r in past]
+        gap = [r["Q_final"]-r["Q_base"] for r in past]
+        self.assertEqual(orders["Q_final"]["mean"], statistics.mean(final))
+        self.assertEqual(orders["Q_final"]["standard_deviation"], statistics.stdev(final))
+        self.assertEqual(orders["Q_final_minus_Q_base"]["minimum"], min(gap))
+        # Warm-up executes the support quantity, so every warm-up gap is zero.
+        self.assertEqual(orders["Q_final_minus_Q_base"],
+                         {"mean": 0, "standard_deviation": 0.0, "minimum": 0, "maximum": 0})
+
+    def test_summary_order_statistics_use_executed_signed_gaps(self):
+        env, row = self.begin()
+        history = deepcopy(env.agents[0].history)
+        for record, (base, final) in zip(history[-9:], [(10, 12), (10, 8)]*4 + [(10, 10)]):
+            record["Q_base"], record["Q_final"] = base, final
+        orders = build_C("C3", history, row)["order_statistics"]
+        gap = [2, -2]*4 + [0]
+        self.assertEqual(orders["Q_final_minus_Q_base"]["mean"], statistics.mean(gap))
+        self.assertEqual(orders["Q_final_minus_Q_base"]["standard_deviation"], statistics.stdev(gap))
+        self.assertEqual((orders["Q_final_minus_Q_base"]["minimum"],
+                          orders["Q_final_minus_Q_base"]["maximum"]), (-2, 2))
+        history[-1]["Q_base"] = None
+        orders = build_C("C3", history, row)["order_statistics"]
+        self.assertIsNone(orders["Q_base"])
+        self.assertIsNone(orders["Q_final_minus_Q_base"])
+        self.assertIsNotNone(orders["Q_final"])
+
+    def test_raw_context_levels_are_unchanged_by_c3_order_statistics(self):
+        env, row = self.begin()
+        for level in ("C0", "C1", "C2"):
+            with self.subTest(level=level):
+                context = build_C(level, env.agents[0].history, row)
+                self.assertNotIn("order_statistics", context)
+                self.assertIn("past_orders", context)
 
     def test_A_is_one_direct_order_call_with_only_own_C0_and_current_D(self):
         env, row = self.begin()
@@ -217,6 +256,7 @@ class HarnessTests(unittest.TestCase):
                 self.assertEqual(payload["P_post"], result["P_post"])
                 if level == "M3":
                     self.assertEqual(set(result["outgoing_message"]), {"plan_t_plus_1", "plan_t_plus_2"})
+                    self.assertTrue(all(type(v) is int for v in result["outgoing_message"].values()))
                 self.assertEqual(env.agents[0].history[-1]["outgoing_message"], result["outgoing_message"])
 
     def test_direct_arithmetic_error_remains_used_and_logged(self):
@@ -317,6 +357,44 @@ class HarnessTests(unittest.TestCase):
             with self.subTest(message=message), self.assertRaises(ValueError):
                 _validate_message({"message": message}, "M2")
         _validate_message({"message": "A shortage risk explains the current replenishment."}, "M2")
+
+    def test_m3_accepts_only_integer_plans_within_order_cap(self):
+        cap = self.config.order_cap
+        schema = plan_schema(cap)
+        for good in ({"plan_t_plus_1": 0, "plan_t_plus_2": cap}, {"plan_t_plus_1": 12, "plan_t_plus_2": 10}):
+            validate_schema(good, schema)
+            _validate_message(good, "M3", cap)
+        bad_values = (-1, cap+1, 10.5, "10", True, None)
+        for value in bad_values:
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                candidate = {"plan_t_plus_1": value, "plan_t_plus_2": 10}
+                validate_schema(candidate, schema)
+                _validate_message(candidate, "M3", cap)
+        for candidate in ({"plan_t_plus_1": 10}, {"plan_t_plus_1": 10, "plan_t_plus_2": 10, "note": "x"}):
+            with self.subTest(candidate=candidate), self.assertRaises(ValueError):
+                validate_schema(candidate, schema)
+
+    def test_m3_numeric_plan_reaches_upstream_selection_and_order(self):
+        plan = {"plan_t_plus_1": 13, "plan_t_plus_2": 9}
+        provider = ScriptProvider({"message": plan})
+        env, row, result, _ = self.decide("C0M3T3", provider)
+        self.assertEqual(result["outgoing_message"], plan)
+        upstream_row = env.begin_agent(1, 31, result["Q_final"])
+        upstream_provider = MockProvider()
+        Harness(self.config, get_condition("C0M3T3"), upstream_provider).decide(
+            env, 1, upstream_row, result["outgoing_message"])
+        by_task = {e["task"]: e for e in upstream_provider.events}
+        self.assertEqual(by_task["select"]["payload"]["M"], plan)
+        self.assertEqual(by_task["order"]["payload"]["M"], plan)
+        self.assertIn("planned order quantities", by_task["order"]["instructions"])
+
+    def test_m3_invalid_plan_exhausts_to_empty_message_but_keeps_order(self):
+        provider = ScriptProvider(outputs={"order": {"order_quantity": 42, "rationale": "A deliberate order."}},
+                                  failures={"message": RecoverableCallError("plan out of range")})
+        env, row, result, _ = self.decide("C0M3T2", provider)
+        self.assertEqual(result["Q_final"], 42)
+        self.assertIsNone(result["outgoing_message"])
+        self.assertTrue(result["message_fallback"])
 
     def test_factory_does_not_generate_a_message_to_nonexistent_agent(self):
         env = self.warmup.clone()

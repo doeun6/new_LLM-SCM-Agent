@@ -259,7 +259,8 @@ class MockProvider:
             else:
                 parsed = {"order_quantity": payload["D"], "rationale": "Replenish the current incoming request."}
         elif task == "message" and meta.get("message_level") == "M3":
-            parsed = {"plan_t_plus_1": "Maintain replenishment if demand stays stable.", "plan_t_plus_2": "Reassess replenishment using observed demand."}
+            plan = int(payload["Q_final"])  # deterministic test double: keep the committed order
+            parsed = {"plan_t_plus_1": plan, "plan_t_plus_2": plan}
         else:
             parsed = {"message": "The order reflects replenishment needs and the outstanding supply."}
         validate_schema(parsed, schema)

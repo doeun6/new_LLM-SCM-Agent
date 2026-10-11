@@ -14,6 +14,32 @@ from . import prompts
 
 STATE_FIELDS = ("D", "I", "B", "P_pre")
 WINDOWS = {"C0": 10, "C1": 20, "C2": 5, "C3": 10}
+# C3 order statistics use the same t-9..t-1 past orders that C0 shows as raw rows.
+ORDER_STAT_FIELDS = ("Q_base", "Q_final", "Q_final_minus_Q_base")
+ORDER_STAT_DEFINITIONS = {
+    "Q_base": "reference support quantity calculated by the code in that period",
+    "Q_final": "order actually executed and sent upstream in that period",
+    "Q_final_minus_Q_base": ("executed order minus reference support in the same period; "
+                             "positive means the executed order exceeded the support"),
+}
+
+
+def _summary(values):
+    return {"mean": statistics.mean(values),
+            "standard_deviation": statistics.stdev(values),
+            "minimum": min(values), "maximum": max(values)}
+
+
+def _order_statistics(past):
+    """Past-order summary for C3; null when any past reference is unavailable."""
+    series = {"Q_final": [row["Q_final"] for row in past]}
+    if any(row["Q_base"] is None for row in past):
+        series.update(Q_base=None, Q_final_minus_Q_base=None)
+    else:
+        series["Q_base"] = [row["Q_base"] for row in past]
+        series["Q_final_minus_Q_base"] = [row["Q_final"]-row["Q_base"] for row in past]
+    return {key: None if series[key] is None else _summary(series[key])
+            for key in ORDER_STAT_FIELDS}
 
 
 def build_C(level, history, currentrow):
@@ -32,15 +58,12 @@ def build_C(level, history, currentrow):
         result.update({
             "representation": "statistics", "window": 10,
             "period_start": t-9, "period_end": t,
-            "statistics": {
-                key: {
-                    "mean": statistics.mean(row[key] for row in rows),
-                    "standard_deviation": statistics.stdev(row[key] for row in rows),
-                    "minimum": min(row[key] for row in rows),
-                    "maximum": max(row[key] for row in rows),
-                }
-                for key in STATE_FIELDS
-            },
+            "statistics": {key: _summary([row[key] for row in rows]) for key in STATE_FIELDS},
+            # The current order is not yet decided, so order statistics end at t-1.
+            "order_window": len(past),
+            "order_period_start": t-len(past), "order_period_end": t-1,
+            "order_definitions": dict(ORDER_STAT_DEFINITIONS),
+            "order_statistics": _order_statistics(past),
         })
     else:
         result.update({
@@ -67,13 +90,29 @@ SELECTION_SCHEMA = _schema({"method": {"type": "string", "enum": list(METHODS)}}
 ORDER_SCHEMA = _schema({"order_quantity": {"type": "number"},
                        "rationale": {"type": "string"}})
 MESSAGE_SCHEMA = _schema({"message": {"type": "string"}})
-PLAN_SCHEMA = _schema({"plan_t_plus_1": {"type": "string"},
-                      "plan_t_plus_2": {"type": "string"}})
+PLAN_FIELDS = ("plan_t_plus_1", "plan_t_plus_2")
 
 
-def _validate_message(value, level):
-    fields = ("plan_t_plus_1", "plan_t_plus_2") if level == "M3" else ("message",)
-    if any(not value[key].strip() for key in fields):
+def plan_schema(order_cap):
+    """M3: the sender's own planned order quantities for t+1 and t+2."""
+    quantity = {"type": "integer", "minimum": 0, "maximum": order_cap}
+    return _schema({key: dict(quantity) for key in PLAN_FIELDS})
+
+
+def _validate_message(value, level, order_cap=None):
+    if level == "M3":
+        # validate_schema checks the integer type but not minimum/maximum,
+        # so the range is enforced here and shares the common retry budget.
+        if order_cap is None:
+            raise ValueError("M3 validation requires the order cap")
+        for key in PLAN_FIELDS:
+            quantity = value[key]
+            if type(quantity) is not int:
+                raise ValueError(f"M3 {key} must be an integer order quantity")
+            if not 0 <= quantity <= order_cap:
+                raise ValueError(f"M3 {key} must be between 0 and {order_cap}")
+        return
+    if not value["message"].strip():
         raise ValueError("Message fields must not be empty")
     if level == "M2":
         message = value["message"]
@@ -262,11 +301,12 @@ class Harness:
         elif i < len(ROLES)-1 and condition.m in ("M2", "M3", "M4"):
             payload = {"C": context, "M": message, "Q_base": base, "Q_final": final,
                        "rationale": rationale, "P_post": committed["P_post"]}
-            schema = PLAN_SCHEMA if condition.m == "M3" else MESSAGE_SCHEMA
+            cap = self.config.order_cap
+            schema = plan_schema(cap) if condition.m == "M3" else MESSAGE_SCHEMA
             try:
-                output = ask("message", prompts.message_instructions(role, condition.m),
+                output = ask("message", prompts.message_instructions(role, condition.m, cap),
                              payload, schema,
-                             validate=lambda value: _validate_message(value, condition.m))
+                             validate=lambda value: _validate_message(value, condition.m, cap))
                 outgoing = deepcopy(output) if condition.m == "M3" else output["message"]
             except RecoverableCallError as exc:
                 diagnostics.update(message_fallback=True, message_fallback_reason=str(exc))
