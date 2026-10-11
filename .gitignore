@@ -8,6 +8,9 @@ results/
 # Local design sources and Word extraction are kept locally, outside the shared repository.
 docs/source_word_extracted.txt
 docs/agreed_specification.json
+# Historical pilot result reports remain local and are not published.
+PILOT_RESULTS.md
+docs/legacy_pilot_report.md
 # Local credentials and common editor/OS files.
 *.pem
 *.key

@@ -185,7 +185,8 @@
       "duplicate_generation_calls": 0,
       "replayed_decisions": 1,
       "interpretation": "No primary contrast significant after prespecified Holm adjustment; observed lower costs accompanied by lower immediate fill rate.",
-      "report": "PILOT_RESULTS.md"
+      "report": null,
+      "report_publication": "Removed from the shared repository; historical local records are retained."
     }
   },
   "offline_test_source_sha256": "020a7c6420638ba277dce56cd1f943ed7a5d2f96f7dd77da8e8d0f61fa1c480a",
