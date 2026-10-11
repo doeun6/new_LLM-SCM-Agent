@@ -80,7 +80,7 @@ python -m scm run --conditions D_cost D_bullwhip --seeds 123 --backend openroute
 | `--backend` | `mock`은 API 없는 모의 응답, `openrouter`는 실제 호출 |
 | `--objective` | A·CMT 조건에서 `cost` 또는 `bullwhip`; 생략 시 cost. D는 이름대로 고정 |
 | `--output` | 배치 결과 폴더. 코드·설정·조건·목적·seed를 바꿀 때 새 폴더 사용 |
-| `--workers` | 서로 다른 조건×seed 실행의 병렬 개수, 기본 1, 허용 1~16. 한 실행 내부의 에이전트 순서는 유지 |
+| `--workers` | 서로 다른 조건×seed 실행의 병렬 개수, 기본 1, 허용 1부터 16까지. 한 실행 내부의 에이전트 순서는 유지 |
 | `--budget-usd` | 배치 전체가 공유하는 API 예산. Python CLI 기본 8달러이며 예시에서는 직접 지정 |
 | `--evaluation-periods` | 기본 100. 다른 값은 점검용이며 정식 100기 성능 결과와 분리 |
 | `--resume` | 같은 배치의 저장된 결과·응답·체크포인트로 재개 |
@@ -95,6 +95,33 @@ Windows 실행 스크립트도 같은 기능을 제공합니다. 이 스크립�
 ```
 
 실제 실행 시 `-DryRun`을 빼면 됩니다. PowerShell 스크립트 실행이 컴퓨터 정책으로 막혀 있으면 위의 `python -m scm ...` 명령으로 실행할 수 있습니다. Python 프로그램의 `--evaluation-periods`는 현재 PowerShell 스크립트의 별도 옵션으로 노출되어 있지 않습니다.
+
+### 전체 103조건을 선택하여 실행
+
+PowerShell에서 저장소의 등록 목록을 읽어 모든 조건을 명시적으로 선택할 수 있습니다. 현재 등록 목록은 `registry.py`와 일치하는지 테스트로 확인합니다. 조건을 추가·삭제했다면 [수정 가이드](MODIFICATION_GUIDE.md)의 목록 갱신 절차도 수행해야 합니다.
+
+```powershell
+$scmConditions = @((Get-Content .\configs\registered_conditions.json -Raw | ConvertFrom-Json).id)
+$scmConditions.Count  # 현재 103
+
+# API 없는 확인
+.\Run-Experiment.ps1 -Conditions $scmConditions -Seeds 123 -Backend openrouter -BudgetUsd 20 -Output results/all_seed123 -DryRun
+
+# 실제 API 실행
+.\Run-Experiment.ps1 -Conditions $scmConditions -Seeds 123 -Backend openrouter -BudgetUsd 20 -Output results/all_seed123
+```
+
+seed 1개는 103회, seed 2개는 206회입니다. 각 회는 공통 준비기간 30기와 평가기간 100기를 포함하며, 준비기간에는 API 호출이 없습니다. `-Seeds 123,456`처럼 바꿔 여러 seed를 선택할 수 있습니다. 예시의 20달러는 **전체 배치에 지정한 예산 상한이며 예상 청구액이 아닙니다.** 자신의 예산으로 바꿉니다. 목적이 섞인 이 배치에는 `-Objective`를 지정하지 않습니다. A와 일반 100조합의 기본 목적은 cost이고, D 두 조건은 각자의 고정 목적을 사용합니다.
+
+**A·일반 100조합을 모두 bullwhip 목적으로 실행**하려면 아래처럼 D를 제외한 101조건과 D 두 조건을 분리합니다. 예시 명령은 우선 `-DryRun`으로 확인하고, 실제 실행 시 해당 옵션을 제거합니다.
+
+```powershell
+$scmMainConditions = @($scmConditions | Where-Object { $_ -ne 'D_cost' -and $_ -ne 'D_bullwhip' })
+.\Run-Experiment.ps1 -Conditions $scmMainConditions -Seeds 123 -Backend openrouter -Objective bullwhip -BudgetUsd 20 -Output results/all_bullwhip_seed123 -DryRun
+.\Run-Experiment.ps1 -Conditions D_cost,D_bullwhip -Seeds 123 -Backend openrouter -BudgetUsd 1 -Output results/d_seed123 -DryRun
+```
+
+분리한 두 명령은 서로 다른 배치이므로 예산도 각각 적용됩니다. D_cost의 목적까지 bullwhip으로 바꾸는 것은 현재 등록 규칙에서 허용하지 않습니다. `-Workers`를 생략하면 한 번에 한 조건×seed를 실행합니다. 진행은 터미널에 완료된 회차별로 표시됩니다.
 
 ## 6. 결과 읽기
 
